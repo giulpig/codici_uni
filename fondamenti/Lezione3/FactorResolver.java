@@ -16,7 +16,7 @@ public class FactorResolver {
             if(n%i == 0){
                 System.out.printf(" * %d", i);
                 n/=i;
-                i=2;
+                //i=2;
             }
             else if(i%2==0)
                 i++;
