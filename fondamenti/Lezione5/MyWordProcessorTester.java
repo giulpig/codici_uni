@@ -1,3 +1,4 @@
+
 import java.util.Scanner;
 /**
    Classe eseguibile per la prova della classe MyWordprocessor. <br>
@@ -15,19 +16,18 @@ import java.util.Scanner;
    @author A. Luchetta
    @version 20201028
 */
-public class MyWordProcessorTester
-{
-   public static void main(String[] args)
-   {
+public class MyWordProcessorTester{
+    public static void main(String[] args)
+    {
       final String FIND = "bianco";
       final String REPLACE = "chiaro";
-
+    
       // oggetto di classe MyWordProcessor
-      MyWordProcessor mwp = new MyWordProcessor();
-
+      MyWordProcessor_slow mwp = new MyWordProcessor_slow();
+    
       // aperura del flusso d'ingresso 
       Scanner in = new Scanner(System.in);
-
+    
       // ciclo di lettura del testo da standard input
       while (in.hasNextLine())
          mwp.add(in.nextLine());

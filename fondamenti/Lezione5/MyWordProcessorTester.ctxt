@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=MyWordProcessorTester
+comment0.text=\n\ \ \ Classe\ eseguibile\ per\ la\ prova\ della\ classe\ MyWordprocessor.\ <br>\n\ \ \ Acquisisce\ un\ testo\ da\ standard\ input\ e\ lo\ elabora\ inviando\ a\ standard\n\ \ \ output\:<br>\n\ \ \ -\ il\ testo\ originale\ <br>\n\ \ \ -\ il\ testo\ modificato\ dopo\ aver\ sostituito\ una\ parola\ <br>\n\ \ \ -\ il\ numero\ di\ sostituzioni\ effettuate\ <br>\n\ \ \ -\ il\ numero\ di\ righe\ e\ di\ parole\ del\ testo\ <br>\n\ \ \ -\ la\ parola\ massima\ del\ testo\ <br>\n\ \ \ -\ il\ testo\ suddiviso\ in\ parole\ <br>\n\ \ \ \n\ \ \ @see\ MyWordProcessor\n\ \ \ \n\ \ \ @author\ A.\ Luchetta\n\ \ \ @version\ 20201028\n
+comment1.params=args
+comment1.target=void\ main(java.lang.String[])
+numComments=2

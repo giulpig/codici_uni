@@ -1,0 +1,77 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - MaxSottostringa",
+            "request": "launch",
+            "mainClass": "MaxSottostringa",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - MySottostringa",
+            "request": "launch",
+            "mainClass": "MySottostringa",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - TextAnalyzer",
+            "request": "launch",
+            "mainClass": "StringAndText.TextAnalyzer",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch) - Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-MCDcomputer<codici_uni_fc0a0129>",
+            "request": "launch",
+            "mainClass": "MCDcomputer",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-MyExpCalculator<codici_uni_fc0a0129>",
+            "request": "launch",
+            "mainClass": "MyExpCalculator",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-MyWordProcessorTester<codici_uni_fc0a0129>",
+            "request": "launch",
+            "mainClass": "MyWordProcessorTester",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-PrimeNumberRecognizer<codici_uni_fc0a0129>",
+            "request": "launch",
+            "mainClass": "PrimeNumberRecognizer",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-StringRotator<codici_uni_fc0a0129>",
+            "request": "launch",
+            "mainClass": "StringRotator",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-TextAnalyzer<codici_uni_fc0a0129>",
+            "request": "launch",
+            "mainClass": "TextAnalyzer",
+            "projectName": "codici_uni_fc0a0129"
+        }
+    ]
+}

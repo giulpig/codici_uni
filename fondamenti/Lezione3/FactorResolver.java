@@ -1,3 +1,5 @@
+package Lezione3;
+
 import java.util.*;
 
 public class FactorResolver {

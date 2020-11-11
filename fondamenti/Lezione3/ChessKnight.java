@@ -1,3 +1,5 @@
+package Lezione3;
+
 public class ChessKnight {
 
     private String position;

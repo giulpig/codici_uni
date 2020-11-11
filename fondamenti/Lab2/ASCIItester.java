@@ -1,3 +1,5 @@
+package Lab2;
+
 public class ASCIItester {
     public static void main(String[] args) {
 

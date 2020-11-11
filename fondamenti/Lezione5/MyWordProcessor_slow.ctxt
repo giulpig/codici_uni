@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=MyWordProcessor_slow
+comment1.params=
+comment1.target=MyWordProcessor_slow()
+comment2.params=line
+comment2.target=void\ add(java.lang.String)
+comment3.params=
+comment3.target=java.lang.String[]\ toWords()
+comment4.params=find\ replace
+comment4.target=int\ findAndReplace(java.lang.String,\ java.lang.String)
+comment5.params=
+comment5.target=java.lang.String\ maxString()
+comment6.params=
+comment6.target=int\ wordSize()
+comment7.params=
+comment7.target=int\ size()
+comment8.params=
+comment8.target=java.lang.String\ toString()
+numComments=9

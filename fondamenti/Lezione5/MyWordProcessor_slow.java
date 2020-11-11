@@ -1,12 +1,12 @@
 import java.util.*;
 
-public class MyWordProcessor {    
+public class MyWordProcessor_slow {    
 
     private int size;
     private int wordSize;
     private String text;
 
-    public MyWordProcessor(){
+    public MyWordProcessor_slow(){
         wordSize = 0;
         text = "";
         size = 0;
@@ -20,7 +20,7 @@ public class MyWordProcessor {
 
         size++;
 
-        int counter = 0;                            //conto quante parola ha la riga
+        int counter = 0;                            //conto quante parola ha la 
         for(int i=0; i<line.length(); i++){
             char carattere = line.charAt(i);
             if(Character.isWhitespace(carattere)){
