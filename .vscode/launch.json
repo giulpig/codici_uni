@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - MontyHall",
+            "request": "launch",
+            "mainClass": "MontyHall",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - MaxSottostringa",
             "request": "launch",
             "mainClass": "MaxSottostringa",
