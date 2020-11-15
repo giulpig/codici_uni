@@ -45,7 +45,7 @@ public class MontyHall {
 
     public static void main(String[] args){
         int cars = 0;
-        int total = Integer.parseInt(args[0]);
+        int total = 500000;//Integer.parseInt(args[0]);
         
         for(int i=0; i<total; i++){
             MontyHall test = new MontyHall();
@@ -58,7 +58,6 @@ public class MontyHall {
 
 
         cars = 0;
-        total = Integer.parseInt(args[0]);
         
         for(int i=0; i<total; i++){
             MontyHall test = new MontyHall();
@@ -66,6 +65,6 @@ public class MontyHall {
                 cars++;
         }
 
-        System.out.printf("Change perc.: %f\n", (100-cars/(double)total*100.0));
+        System.out.printf("Change perc.: %f\n", (cars/(double)total*100.0));
     }
 }

@@ -9,6 +9,20 @@
             "name": "CodeLens (Launch) - MontyHall",
             "request": "launch",
             "mainClass": "MontyHall",
+            "projectName": "codici_uni_55b3004e"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - SubstringGeneratorREC",
+            "request": "launch",
+            "mainClass": "SubstringGeneratorREC",
+            "projectName": "codici_uni_55b3004e"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - MontyHall",
+            "request": "launch",
+            "mainClass": "MontyHall",
             "projectName": "codici_uni_fc0a0129"
         },
         {
