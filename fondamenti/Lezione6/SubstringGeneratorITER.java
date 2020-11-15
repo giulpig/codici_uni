@@ -5,7 +5,7 @@ public class SubstringGeneratorITER {
     {
        for (int i = 0; i < n; i++) 
            for (int j = i+1; j <= n; j++){
-               String temp = str.substring(i, j);
+               str.substring(i, j);
            }
     }
  
