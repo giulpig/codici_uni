@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - SortCronometer",
+            "request": "launch",
+            "mainClass": "SortCronometer",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - RecursiveFactorsComputer",
+            "request": "launch",
+            "mainClass": "RecursiveFactorsComputer",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - RecursiveNumberLister2",
+            "request": "launch",
+            "mainClass": "RecursiveNumberLister2",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - SubstringGeneratorREC",
             "request": "launch",
             "mainClass": "SubstringGeneratorREC",
