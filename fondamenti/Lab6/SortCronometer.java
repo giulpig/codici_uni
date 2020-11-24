@@ -26,7 +26,7 @@ public class SortCronometer
       System.out.println("-------------------------------------------------------");
 
       String line = "";
-      int count = 0;
+      //int count = 0;
       while (in.hasNextLine())
       {
          // acquisizione di n e repetitionFactor
@@ -84,7 +84,8 @@ public class SortCronometer
          String str = printTable(13, n, selectionSortTime, mergeSortTime, insertionSortTime);
          System.out.println(str);
 
-         count++;
+         //count++;
+         tok.close();
       }
       
       in.close();
