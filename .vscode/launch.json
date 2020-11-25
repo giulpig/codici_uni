@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - TextContainerTester",
+            "request": "launch",
+            "mainClass": "TextContainerTester",
+            "projectName": "codici_uni_55b3004e"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - SelectionSortProfiler",
             "request": "launch",
             "mainClass": "SelectionSortProfiler",

@@ -81,6 +81,8 @@ public class ArrayAlgorithms{
 
     }
 
+
+    //see Lezione7
     private static void merge(int[] a, int[] left, int[] right){
 
         int p1=0, p2=0, p3=0;
