@@ -20,13 +20,15 @@ public class TextContainer implements Container {
             for(int i=0; i<line.length(); i++){
                 for(int j=0; j<delimeter.length(); j++){
                     if(line.charAt(i) == delimeter.charAt(j)){
-                        this.add(line.substring(inizio, i));
+                        if(!line.substring(inizio, i).equals(""))
+                            this.add(line.substring(inizio, i));
                         //System.out.println("Aggiunto " + line.substring(inizio, i));
                         inizio = i+1;
                     }
                 }
             }
-            this.add(line.substring(inizio, line.length()));
+            if(!line.substring(inizio, line.length()).equals(""))
+                this.add(line.substring(inizio, line.length()));
         }
 
         System.out.println("Size " + size);
