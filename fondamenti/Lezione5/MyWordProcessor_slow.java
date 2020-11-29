@@ -1,3 +1,5 @@
+package Lezione5;
+
 import java.util.*;
 
 public class MyWordProcessor_slow {    

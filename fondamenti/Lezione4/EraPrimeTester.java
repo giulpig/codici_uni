@@ -1,3 +1,5 @@
+package Lezione4;
+
 import java.util.Scanner;
 
 public class EraPrimeTester{

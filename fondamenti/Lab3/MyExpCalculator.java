@@ -1,3 +1,5 @@
+package Lab3;
+
 import java.util.Scanner;
 import java.lang.Math;
 

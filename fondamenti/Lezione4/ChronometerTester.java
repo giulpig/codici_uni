@@ -1,3 +1,5 @@
+package Lezione4;
+
 /**
    Classe di prova della classe Chronometer
    
