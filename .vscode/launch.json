@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - QueueByStacksMain",
+            "request": "launch",
+            "mainClass": "QueueByStacksMain",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - DoublyLinkedListTester",
             "request": "launch",
             "mainClass": "DoublyLinkedListTester",
