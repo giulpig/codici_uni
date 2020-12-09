@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - DoublyLinkedListTester",
+            "request": "launch",
+            "mainClass": "DoublyLinkedListTester",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - MyVectorGenericsTester",
+            "request": "launch",
+            "mainClass": "MyVectorGenericsTester",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - Test",
             "request": "launch",
             "mainClass": "Test",
