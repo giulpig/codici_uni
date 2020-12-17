@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - ArrayMapGenericsTester",
+            "request": "launch",
+            "mainClass": "ArrayMapGenericsTester",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - TestQ",
             "request": "launch",
             "mainClass": "TestQ",
