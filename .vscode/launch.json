@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch MainListaSuCatena",
+            "request": "launch",
+            "mainClass": "MainListaSuCatena",
+            "projectName": "codici_uni_fc0a0129"
+        },
+        {
+            "type": "java",
             "name": "Launch MMain",
             "request": "launch",
             "mainClass": "MMain",
