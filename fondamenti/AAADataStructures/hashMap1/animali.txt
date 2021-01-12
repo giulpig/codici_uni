@@ -1,0 +1,5 @@
+cane1 falco1 gatto1 lupo1 oca?
+cane2 falco2 gatto2 lupo?
+cane3 falco3 gatto?
+cane4 falco?
+cane?
