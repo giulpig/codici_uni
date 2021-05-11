@@ -8,6 +8,14 @@ public class ZZZMainS {
             mioS.add(Integer.valueOf(i));
         }
 
+        //System.out.println("\n");
+
+        for(int i:nums){
+            System.out.print(mioS.contains(Integer.valueOf(i-2)) + " ");
+        }
+
+        System.out.println("\n");
+
         for(int i:nums){
             System.out.print(mioS.contains(Integer.valueOf(i-2)) + " ");
         }
