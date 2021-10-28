@@ -3,17 +3,19 @@
 using namespace std;
 
 
+constexpr int dim = 10;
+
 void f(){
 
-    int mioarray[10];
+    int mioarray[dim];
 
     int* puntatore = &mioarray[6];
 
-    for(int i=0; i<10-6; i++){
+    for(int i=0; i<dim-6; i++){
         puntatore[i] = i;
     }
 
-    for(int i=0; i<10; i++){
+    for(int i=0; i<dim; i++){
         cout << mioarray[i] << " ";
     }
 
@@ -23,7 +25,7 @@ void f(){
 
 void f_illegal_C(){
 
-    int mioarray[10];
+    int mioarray[dim];
 
     int* puntatore = &mioarray[6];
 

@@ -6,7 +6,7 @@ using namespace std;
 
 int main(){
 
-    char stringa[] = "mi piace la pasta al sugo";
+    char stringa[] = "Me gusta la mangusta";
 
     int i=0;
     while(stringa[i]){

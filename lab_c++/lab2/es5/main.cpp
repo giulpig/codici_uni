@@ -23,10 +23,8 @@ void print_pointer(void* p, bool type){
 
 int main(){
 
-    int myint = -8;                //con questo sizeof() = 80
+    int myint = -8;
     double mydouble = 9.99;
-
-    //int* mioarray = new int[10];    //con questo sizeof() = 8
 
     print_reference((double)myint);
 

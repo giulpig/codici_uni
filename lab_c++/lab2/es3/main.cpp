@@ -2,12 +2,14 @@
 
 using namespace std;
 
+constexpr int dim = 10;
+
 
 void print_array_length(double a[]){
 
     cout << sizeof(a) << "\n";           //sizeof = 8
 
-    for(int i=0; i<10; i++)
+    for(int i=0; i<dim; i++)
         cout << a[i] << " ";
 
     cout << "\n";
@@ -18,7 +20,7 @@ void print_array_length(double a[]){
 
 int main(){
 
-    double mioarray[10];                //con questo sizeof() = 80
+    double mioarray[dim];                //con questo sizeof() = 80
 
     //double* mioarray = new double[10];    //con questo sizeof() = 8
 

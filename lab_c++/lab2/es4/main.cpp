@@ -2,6 +2,8 @@
 
 using namespace std;
 
+constexpr int dim = 10;
+
 
 void print_array(void* a, int n){
 
@@ -21,11 +23,11 @@ void print_array(void* a, int n){
 
 int main(){
 
-    int mioarray[10];                //con questo sizeof() = 80
+    int mioarray[dim];                //cosi' sizeof() = 80
 
-    //int* mioarray = new int[10];    //con questo sizeof() = 8
+    //int* mioarray = new int[10];    //cosi' sizeof() = 8
 
-    print_array(mioarray, 10);
+    print_array(mioarray, dim);
 
     return 0;
 }
