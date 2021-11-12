@@ -5,213 +5,25 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "java",
-            "name": "Launch SETester",
+            "name": "g++-11 - Build and debug active file",
+            "type": "cppdbg",
             "request": "launch",
-            "mainClass": "SETester",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "Launch STester",
-            "request": "launch",
-            "mainClass": "STester",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "Launch DEMain",
-            "request": "launch",
-            "mainClass": "DEMain",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "Launch MainListaSuCatena",
-            "request": "launch",
-            "mainClass": "MainListaSuCatena",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "Launch MMain",
-            "request": "launch",
-            "mainClass": "MMain",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - ArrayMapGenericsTester",
-            "request": "launch",
-            "mainClass": "ArrayMapGenericsTester",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - TestQ",
-            "request": "launch",
-            "mainClass": "TestQ",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - QueueByStacksMain",
-            "request": "launch",
-            "mainClass": "QueueByStacksMain",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - DoublyLinkedListTester",
-            "request": "launch",
-            "mainClass": "DoublyLinkedListTester",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - MyVectorGenericsTester",
-            "request": "launch",
-            "mainClass": "MyVectorGenericsTester",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - Test",
-            "request": "launch",
-            "mainClass": "Test",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - TextContainerTester",
-            "request": "launch",
-            "mainClass": "TextContainerTester",
-            "projectName": "codici_uni_55b3004e"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - SelectionSortProfiler",
-            "request": "launch",
-            "mainClass": "SelectionSortProfiler",
-            "projectName": "codici_uni_55b3004e"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - SortCronometer",
-            "request": "launch",
-            "mainClass": "SortCronometer",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - RecursiveFactorsComputer",
-            "request": "launch",
-            "mainClass": "RecursiveFactorsComputer",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - RecursiveNumberLister2",
-            "request": "launch",
-            "mainClass": "RecursiveNumberLister2",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - SubstringGeneratorREC",
-            "request": "launch",
-            "mainClass": "SubstringGeneratorREC",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - MontyHall",
-            "request": "launch",
-            "mainClass": "MontyHall",
-            "projectName": "codici_uni_55b3004e"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - SubstringGeneratorREC",
-            "request": "launch",
-            "mainClass": "SubstringGeneratorREC",
-            "projectName": "codici_uni_55b3004e"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - MontyHall",
-            "request": "launch",
-            "mainClass": "MontyHall",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - MaxSottostringa",
-            "request": "launch",
-            "mainClass": "MaxSottostringa",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - MySottostringa",
-            "request": "launch",
-            "mainClass": "MySottostringa",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - TextAnalyzer",
-            "request": "launch",
-            "mainClass": "StringAndText.TextAnalyzer",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch) - Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-MCDcomputer<codici_uni_fc0a0129>",
-            "request": "launch",
-            "mainClass": "MCDcomputer",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-MyExpCalculator<codici_uni_fc0a0129>",
-            "request": "launch",
-            "mainClass": "MyExpCalculator",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-MyWordProcessorTester<codici_uni_fc0a0129>",
-            "request": "launch",
-            "mainClass": "MyWordProcessorTester",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-PrimeNumberRecognizer<codici_uni_fc0a0129>",
-            "request": "launch",
-            "mainClass": "PrimeNumberRecognizer",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-StringRotator<codici_uni_fc0a0129>",
-            "request": "launch",
-            "mainClass": "StringRotator",
-            "projectName": "codici_uni_fc0a0129"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-TextAnalyzer<codici_uni_fc0a0129>",
-            "request": "launch",
-            "mainClass": "TextAnalyzer",
-            "projectName": "codici_uni_fc0a0129"
+            "program": "${fileDirname}/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "C/C++: g++-11 build active file",
+            "miDebuggerPath": "/usr/bin/gdb"
         }
     ]
 }
