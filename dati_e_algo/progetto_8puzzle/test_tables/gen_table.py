@@ -22,18 +22,19 @@ try:
 except:
     lato = 3
     
-board = [i for i in range(lato*lato)]
-while True:
-    random.shuffle(board)
-    board = [int(i) for i in "0 1 3 4 2 5 7 8 6".split()]
-    if lato%2 != 0 and count_inversions(board) % 2 == 0:
-        break
-    elif lato%2 == 0 and (count_inversions(board)+board.index(0)//lato) % 2 == 0:
-        break
-    
-    
-print(lato)
-for i in board[:-1]:
-    print(i, end=" ")
-    
-print(board[-1])
+for i in range(2, 17):
+  with open("input" + str(i) + ".txt", "w") as out:
+    board = [i for i in range(lato*lato)]
+    while True:
+        random.shuffle(board)
+        if lato%2 != 0 and count_inversions(board) % 2 == 0:
+            break
+        elif lato%2 == 0 and (count_inversions(board)+board.index(0)//lato) % 2 == 0:
+            break
+        
+        
+    out.write(str(lato) + "\n")
+    for i in board[:-1]:
+        out.write(str(i) + " ")
+        
+    out.write(str(board[-1]) + "\n")

@@ -27,26 +27,29 @@ public class Solver{
             pQueue.add(root);
             while(!pQueue.isEmpty()){
 
-                TreeNode current = pQueue.poll();
+                TreeNode current = pQueue.peek();
 
-                current.calcSons();   //also update activeBoards
-
-                System.out.print("\r" + current.moves + " " + (current.moves + current.board.dist) + "   ");
-                //System.out.print("\r" + nodes);
-                //System.out.print("\r" + current.sons.length);
-
-                if(current.sons != null){
-
-                    for(int i=0; i<current.sons.length; i++){
-                        
-                        if(current.sons[i].board.dist == 0){  //se e' nodo vincente
-                            return current.sons[i];
-                        }
-
-                        pQueue.add(current.sons[i]);
-                    }
+                TreeNode son = current.nextSon();   //also updates activeBoards
+                
+                if(current.lastSonChecked == 3){
+                    pQueue.poll();
                 }
 
+                //System.out.print("\r" + current.moves + " " + (current.moves + current.board.dist) + "   ");
+                //System.out.print("\r" + nodes);
+                //System.out.print("\r" + current.sons.length);
+                //System.out.print("\r" + current.board.toString());
+
+                if(son != null){
+
+                    //System.out.print("\r" + son.board.dist + "   ");
+
+                    if(son.board.dist == 0){
+                        return son;
+                    }
+
+                    pQueue.add(son);
+                }
                 
             }
             System.out.println("Porcodiiiioioioi");      //toremove
@@ -64,12 +67,12 @@ public class Solver{
             public static HashMap<Board, TreeNode> activeBoards = new HashMap<Board, TreeNode>();
             
             public byte moves;       //mosse per arrivare qua === depth dell'albero
-            public byte lastMove;   //ultima mossa fatta: 0->radice 1->su 2->sx 3->dx 4->giu
+            public byte lastMove;    //ultima mossa fatta: 0->radice 1->su 2->sx 3->dx 4->giu
+            public byte lastSonChecked = -1;
             public Board board;
             //public boolean alive = true;
 
             public TreeNode father;
-            public TreeNode[] sons;
 
             public TreeNode(Board b, byte m, TreeNode f, byte l){
                 board = b;
@@ -78,207 +81,153 @@ public class Solver{
                 lastMove = l;
 
                 Tree.nodes++;       //toremove
+                //System.out.print("\r" + nodes + " " + activeBoards.size());
             }
 
-            public void calcSons(){   //calcola figli (non considera quelli con board gia' presenti)
 
-                short bucox = (short)(board.buco / board.table.length);
-                short bucoy = (short)(board.buco % board.table.length);
+            public TreeNode nextSon(){
 
                 short temp;
-                byte count=0;
-                
-                TreeNode ret1=null, ret2=null, ret3=null, ret4=null;
-                
+                Board newBoard;
+                TreeNode ret = null;
 
-                if(lastMove!=4 && bucox > 0){          //swap in alto
+                if(lastSonChecked==-1){
+                    if(lastMove!=4 && board.bucox > 0){          //swap in alto
                     
-                    Board newBoard = new Board(board.table);    //qua porei fregare la board se c'e' collisione e ho una dist minore
+                        newBoard = new Board(board.table);    //qua porei fregare la board se c'e' collisione e ho una dist minore
 
-                    ret1 = new TreeNode(newBoard, (byte)(moves+1), this, (byte)1);
+                        ret = new TreeNode(newBoard, (byte)(moves+1), this, (byte)1);
 
-                    //aggiorno dist: real-expected
-                    if(bucox-1 < (ret1.board.table[bucox-1][bucoy]-1)/ret1.board.table.length){
-                        ret1.board.dist = board.dist - 1;
-                    }
-                    else{
-                        ret1.board.dist = board.dist + 1;
-                    }
-                
-                    //swap
-                    temp = ret1.board.table[bucox][bucoy];
-                    ret1.board.table[bucox][bucoy] = ret1.board.table[bucox-1][bucoy];
-                    ret1.board.table[bucox-1][bucoy] = temp;
-
-                    //update posizione buco, sale
-                    ret1.board.buco = board.buco - board.table.length;
-
-                    //se gia' esiste, agisco su activeBoards
-                    TreeNode collisioner = activeBoards.get(ret1.board);
-                    if(collisioner != null){
-                        if(collisioner.board.dist+collisioner.moves <= board.dist+moves){
-                            ret1 = null;
+                        //aggiorno dist: real-expected
+                        if(board.bucox-1 < (ret.board.table[board.bucox-1][board.bucoy]-1)/ret.board.table.length){
+                            ret.board.dist = board.dist - 1;
                         }
                         else{
-                            count++;
-                            activeBoards.remove(collisioner.board);
-                            pQueue.remove(collisioner);
-                            collisioner = null;
-
-                            activeBoards.put(board, this);
+                            ret.board.dist = board.dist + 1;
                         }
+                    
+                        //swap
+                        temp = ret.board.table[board.bucox][board.bucoy];
+                        ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox-1][board.bucoy];
+                        ret.board.table[board.bucox-1][board.bucoy] = temp;
+
+                        //update posizione buco, sale
+                        ret.board.bucox = (short)(board.bucox-1);
+                        ret.board.bucoy = board.bucoy;
                     }
-                    else{
-                        count++;
-                        activeBoards.put(board, this);
-                    }
+                    lastSonChecked++;
                 }
 
 
-                if(lastMove!=3 && bucoy > 0){          //swap a sx
+                if(ret==null && lastSonChecked==0){
+                    if(lastMove!=3 && board.bucoy > 0){          //swap a sx
                     
-                    Board newBoard = new Board(board.table);
+                        newBoard = new Board(board.table);
 
-                    ret2 = new TreeNode(newBoard, (byte)(moves+1), this, (byte)2);
+                        ret = new TreeNode(newBoard, (byte)(moves+1), this, (byte)2);
 
-                    //aggiorno dist: real-expected, casella swappata va a dx
-                    if(bucoy-1 < (ret2.board.table[bucox][bucoy-1]-1)/ret2.board.table.length){
-                        ret2.board.dist = board.dist - 1;
-                    }
-                    else{
-                        ret2.board.dist = board.dist + 1;
-                    }
-
-                    temp = ret2.board.table[bucox][bucoy];
-                    ret2.board.table[bucox][bucoy] = ret2.board.table[bucox][bucoy-1];
-                    ret2.board.table[bucox][bucoy-1] = temp;
-
-                    //update buco, va a sx
-                    ret2.board.buco = board.buco - 1;
-
-                    //se gia' esiste, agisco su activeBoards
-                    TreeNode collisioner = activeBoards.get(ret2.board);
-                    if(collisioner != null){
-                        if(collisioner.board.dist+collisioner.moves <= board.dist+moves){
-                            ret2 = null;
+                        //aggiorno dist: real-expected, casella swappata va a dx
+                        if(board.bucoy-1 < (ret.board.table[board.bucox][board.bucoy-1]-1)%ret.board.table.length){
+                            ret.board.dist = board.dist - 1;
                         }
                         else{
-                            count++;
-                            activeBoards.remove(collisioner.board);
-                            pQueue.remove(collisioner);
-                            collisioner = null;
-
-                            activeBoards.put(board, this);
+                            ret.board.dist = board.dist + 1;
                         }
+
+                        temp = ret.board.table[board.bucox][board.bucoy];
+                        ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox][board.bucoy-1];
+                        ret.board.table[board.bucox][board.bucoy-1] = temp;
+
+                        //update buco, va a sx
+                        ret.board.bucoy = (short)(board.bucoy-1);
+                        ret.board.bucox = board.bucox;
                     }
-                    else{
-                        count++;
-                        activeBoards.put(board, this);
-                    }
+                    lastSonChecked++;
                 }
 
+
+                if(ret==null && lastSonChecked==1){
+                    if(lastMove!=2 && board.bucoy < board.table.length-1){       //swap a dx
+                    
+                        newBoard = new Board(board.table);
+
+                        ret = new TreeNode(newBoard, (byte)(moves+1), this, (byte)3);
+
+                        //aggiorno dist: real-expected, casella swappata va a sx
+                        if(board.bucoy+1 > (ret.board.table[board.bucox][board.bucoy+1]-1)%ret.board.table.length){
+                            ret.board.dist = board.dist - 1;
+                        }
+                        else{
+                            ret.board.dist = board.dist + 1;
+                        }
                 
-                if(lastMove!=2 && bucoy < board.table.length-1){       //swap a dx
-                    
-                    Board newBoard = new Board(board.table);
+                        temp = ret.board.table[board.bucox][board.bucoy];
+                        ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox][board.bucoy+1];
+                        ret.board.table[board.bucox][board.bucoy+1] = temp;
 
-                    ret3 = new TreeNode(newBoard, (byte)(moves+1), this, (byte)3);
-
-                    //aggiorno dist: real-expected, casella swappata va a sx
-                    if(bucoy+1 > (ret3.board.table[bucox][bucoy+1]-1)/ret3.board.table.length){
-                        ret3.board.dist = board.dist - 1;
+                        //update buco, va a dx
+                        ret.board.bucoy = (short)(board.bucoy+1);
+                        ret.board.bucox = board.bucox;
                     }
-                    else{
-                        ret3.board.dist = board.dist + 1;
-                    }
-            
-                    temp = ret3.board.table[bucox][bucoy];
-                    ret3.board.table[bucox][bucoy] = ret3.board.table[bucox][bucoy+1];
-                    ret3.board.table[bucox][bucoy+1] = temp;
-
-                    //update buco, va a dx
-                    ret3.board.buco = board.buco + 1;
-
-                    //se gia' esiste, agisco su activeBoards
-                    TreeNode collisioner = activeBoards.get(ret3.board);
-                    if(collisioner != null){
-                        if(collisioner.board.dist+collisioner.moves <= board.dist+moves){
-                            ret3 = null;
-                        }
-                        else{
-                            count++;
-                            activeBoards.remove(collisioner.board);
-                            pQueue.remove(collisioner);
-                            collisioner = null;
-                            
-                            activeBoards.put(board, this);
-                        }
-                    }
-                    else{
-                        count++;
-                        activeBoards.put(board, this);
-                    }
+                    lastSonChecked++;
                 }
 
 
-                if(lastMove!=1 && bucox < board.table.length-1){      //swap in basso
+                if(ret==null && lastSonChecked==2){
+                    if(lastMove!=1 && board.bucox < board.table.length-1){      //swap in basso
                     
-                    Board newBoard = new Board(board.table);
+                        newBoard = new Board(board.table);
 
-                    ret4 = new TreeNode(newBoard, (byte)(moves+1), this, (byte)4);
+                        ret = new TreeNode(newBoard, (byte)(moves+1), this, (byte)4);
 
-                    //aggiorno dist: real-expected
-                    if(bucox+1 > (ret4.board.table[bucox+1][bucoy]-1)/ret4.board.table.length){
-                        ret4.board.dist = board.dist - 1;
-                    }
-                    else{
-                        ret4.board.dist = board.dist + 1;
-                    }
-                
-                    temp = ret4.board.table[bucox][bucoy];
-                    ret4.board.table[bucox][bucoy] = ret4.board.table[bucox+1][bucoy];
-                    ret4.board.table[bucox+1][bucoy] = temp;
-
-                    //update buco, va in basso
-                    ret4.board.buco = board.buco + board.table.length;
-
-                    //se gia' esiste, agisco su activeBoards
-                    TreeNode collisioner = activeBoards.get(ret4.board);
-                    if(collisioner != null){
-                        if(collisioner.board.dist+collisioner.moves <= board.dist+moves){
-                            ret4 = null;
+                        //aggiorno dist: real-expected
+                        if(board.bucox+1 > (ret.board.table[board.bucox+1][board.bucoy]-1)/ret.board.table.length){
+                            ret.board.dist = board.dist - 1;
                         }
                         else{
-                            count++;
-                            activeBoards.remove(collisioner.board);
-                            pQueue.remove(collisioner);
-                            collisioner = null;
-
-                            activeBoards.put(board, this);
+                            ret.board.dist = board.dist + 1;
                         }
+                    
+                        temp = ret.board.table[board.bucox][board.bucoy];
+                        ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox+1][board.bucoy];
+                        ret.board.table[board.bucox+1][board.bucoy] = temp;
+
+                        //update buco, va in basso
+                        ret.board.bucox = (short)(board.bucox+1);
+                        ret.board.bucoy = board.bucoy;
+
+                        //all'ultimo controllo elimino la entry
+                        //activeBoards.remove(this.board);
                     }
-                    else{
-                        count++;
-                        activeBoards.put(board, this);
-                    }
+                    lastSonChecked++;
                 }
 
 
+                if(ret==null){
+                    return null;
+                }
 
-                if(count == 0)
-                    return;
+                //se gia' esiste, agisco su activeBoards
+                TreeNode collisioner = activeBoards.get(ret.board);
+                if(collisioner != null){
 
-                sons = new TreeNode[count];
-                if(ret4!=null)
-                    sons[--count] = ret4;
-                if(ret3!=null)
-                    sons[--count] = ret3;
-                if(ret2!=null)
-                    sons[--count] = ret2;
-                if(ret1!=null)
-                    sons[--count] = ret1;
+                    if(collisioner.board.dist+collisioner.moves <= board.dist+moves){
+                        ret = null;
+                    }
+                    else{
+                        activeBoards.remove(collisioner.board);
+                        pQueue.remove(collisioner);
+                        collisioner = null;
+
+                        activeBoards.put(board, this);
+                    }
+                }
+                else{
+                    activeBoards.put(board, this);
+                }
+
+                return ret;
             }
-
 
 
             public int compareTo(TreeNode o){
@@ -294,6 +243,10 @@ public class Solver{
                 return 0;
             }
 
+            @Override
+            public boolean equals(Object o){
+                return board.dist+moves == (((TreeNode)(o)).board.dist+((TreeNode)(o)).moves);
+            }
             
 
         }
@@ -350,8 +303,7 @@ public class Solver{
 
     }
 
-
-
+    //Recreate path from solution to root
     public static void printPath(Tree.TreeNode n) throws IOException{
         Tree.TreeNode[] path = new Tree.TreeNode[n.moves+1];
         Tree.TreeNode pointer = n;
@@ -388,7 +340,9 @@ public class Solver{
         Tree.TreeNode radice = new Tree.TreeNode(tab, (byte)(0), null, (byte)0);
         Tree albero = new Tree(radice);
 
-        printPath(albero.findSolver());
+        albero.findSolver();
+
+        //printPath(albero.findSolver());
 
     }
 
