@@ -340,9 +340,9 @@ public class Solver{
         Tree.TreeNode radice = new Tree.TreeNode(tab, (byte)(0), null, (byte)0);
         Tree albero = new Tree(radice);
 
-        albero.findSolver();
+        //albero.findSolver();
 
-        //printPath(albero.findSolver());
+        printPath(albero.findSolver());
 
     }
 
