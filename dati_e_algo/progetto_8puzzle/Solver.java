@@ -66,7 +66,7 @@ public class Solver{
             
             public static HashMap<Board, TreeNode> activeBoards = new HashMap<Board, TreeNode>();
             
-            public byte moves;       //mosse per arrivare qua === depth dell'albero
+            public short moves;       //mosse per arrivare qua === depth dell'albero
             public byte lastMove;    //ultima mossa fatta: 0->radice 1->su 2->sx 3->dx 4->giu
             public byte lastSonChecked = -1;
             public Board board;
@@ -74,7 +74,7 @@ public class Solver{
 
             public TreeNode father;
 
-            public TreeNode(Board b, byte m, TreeNode f, byte l){
+            public TreeNode(Board b, short m, TreeNode f, byte l){
                 board = b;
                 moves = m;
                 father = f;
@@ -96,7 +96,7 @@ public class Solver{
                     
                         newBoard = new Board(board.table);    //qua porei fregare la board se c'e' collisione e ho una dist minore
 
-                        ret = new TreeNode(newBoard, (byte)(moves+1), this, (byte)1);
+                        ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)1);
 
                         //aggiorno dist: real-expected
                         if(board.bucox-1 < (ret.board.table[board.bucox-1][board.bucoy]-1)/ret.board.table.length){
@@ -124,7 +124,7 @@ public class Solver{
                     
                         newBoard = new Board(board.table);
 
-                        ret = new TreeNode(newBoard, (byte)(moves+1), this, (byte)2);
+                        ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)2);
 
                         //aggiorno dist: real-expected, casella swappata va a dx
                         if(board.bucoy-1 < (ret.board.table[board.bucox][board.bucoy-1]-1)%ret.board.table.length){
@@ -151,7 +151,7 @@ public class Solver{
                     
                         newBoard = new Board(board.table);
 
-                        ret = new TreeNode(newBoard, (byte)(moves+1), this, (byte)3);
+                        ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)3);
 
                         //aggiorno dist: real-expected, casella swappata va a sx
                         if(board.bucoy+1 > (ret.board.table[board.bucox][board.bucoy+1]-1)%ret.board.table.length){
@@ -178,7 +178,7 @@ public class Solver{
                     
                         newBoard = new Board(board.table);
 
-                        ret = new TreeNode(newBoard, (byte)(moves+1), this, (byte)4);
+                        ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)4);
 
                         //aggiorno dist: real-expected
                         if(board.bucox+1 > (ret.board.table[board.bucox+1][board.bucoy]-1)/ret.board.table.length){
@@ -337,12 +337,12 @@ public class Solver{
 
         //Board tab = readInput(args[0]);
 
-        Tree.TreeNode radice = new Tree.TreeNode(tab, (byte)(0), null, (byte)0);
+        Tree.TreeNode radice = new Tree.TreeNode(tab, (short)(0), null, (byte)0);
         Tree albero = new Tree(radice);
 
-        //albero.findSolver();
+        albero.findSolver();
 
-        printPath(albero.findSolver());
+        //printPath(albero.findSolver());
 
     }
 
