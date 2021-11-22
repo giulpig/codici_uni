@@ -35,7 +35,7 @@ public class Solver{
                     pQueue.poll();
                 }
 
-                //System.out.print("\r" + current.moves + " " + (current.moves + current.board.dist) + "   ");
+                System.out.print("\r" + current.moves + " " + (current.moves + current.board.dist) + "   ");
                 //System.out.print("\r" + nodes);
                 //System.out.print("\r" + current.sons.length);
                 //System.out.print("\r" + current.board.toString());
@@ -340,9 +340,9 @@ public class Solver{
         Tree.TreeNode radice = new Tree.TreeNode(tab, (short)(0), null, (byte)0);
         Tree albero = new Tree(radice);
 
-        albero.findSolver();
+        //albero.findSolver();
 
-        //printPath(albero.findSolver());
+        printPath(albero.findSolver());
 
     }
 
