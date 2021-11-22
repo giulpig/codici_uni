@@ -740,7 +740,7 @@ int main() {
 	int temp;
 	for(int i=0; i<9; i++){
 		cin >> temp;
-		aState[i] = temp;
+		aState[i] = temp;	
 	}
 
 	cout<<"1 Manhattan Distance"<<endl
