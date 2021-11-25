@@ -11,10 +11,12 @@ public class Solver{
     //Tree class
     ////////////////////////////////////////////
 
+    public static PriorityQueue<Tree.TreeNode> pQueue = new PriorityQueue<Tree.TreeNode>();
+    public static HashMap<Board, Tree.TreeNode> activeBoards = new HashMap<Board, Tree.TreeNode>(2999, 0.5f);
+
     public static class Tree{
-        public short N;
         public TreeNode root;
-        public static PriorityQueue<TreeNode> pQueue = new PriorityQueue<TreeNode>();
+        public short lastLevel;
         
         public static int nodes = 0;    //toremove
         
@@ -27,29 +29,21 @@ public class Solver{
             pQueue.add(root);
             while(!pQueue.isEmpty()){
 
-                TreeNode current = pQueue.peek();
+                TreeNode current = pQueue.poll();
 
-                TreeNode son = current.nextSon();   //also updates activeBoards
-                
-                if(current.lastSonChecked == 3){
-                    pQueue.poll();
+                if(current.board.dist == 0){
+                    return current;
                 }
 
-                System.out.print("\r" + current.moves + " " + (current.moves + current.board.dist) + "   ");
+                current.calcSons();   //also updates activeBoards and pQueue
+
+                if(current.moves + current.board.dist > lastLevel){
+                    System.out.print("\r" + (current.moves + current.board.dist) + "   ");
+                    lastLevel = (short)(current.moves + current.board.dist);
+                }
                 //System.out.print("\r" + nodes);
                 //System.out.print("\r" + current.sons.length);
                 //System.out.print("\r" + current.board.toString());
-
-                if(son != null){
-
-                    //System.out.print("\r" + son.board.dist + "   ");
-
-                    if(son.board.dist == 0){
-                        return son;
-                    }
-
-                    pQueue.add(son);
-                }
                 
             }
             System.out.println("Porcodiiiioioioi");      //toremove
@@ -64,11 +58,8 @@ public class Solver{
 
         public static class TreeNode implements Comparable<TreeNode>{
             
-            public static HashMap<Board, TreeNode> activeBoards = new HashMap<Board, TreeNode>();
-            
             public short moves;       //mosse per arrivare qua === depth dell'albero
             public byte lastMove;    //ultima mossa fatta: 0->radice 1->su 2->sx 3->dx 4->giu
-            public byte lastSonChecked = -1;
             public Board board;
             //public boolean alive = true;
 
@@ -85,133 +76,125 @@ public class Solver{
             }
 
 
-            public TreeNode nextSon(){
+            public void calcSons(){
 
                 short temp;
                 Board newBoard;
-                TreeNode ret = null;
+                TreeNode ret;
 
-                if(lastSonChecked==-1){
-                    if(lastMove!=4 && board.bucox > 0){          //swap in alto
-                    
-                        newBoard = new Board(board.table);    //qua porei fregare la board se c'e' collisione e ho una dist minore
-
-                        ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)1);
-
-                        //aggiorno dist: real-expected
-                        if(board.bucox-1 < (ret.board.table[board.bucox-1][board.bucoy]-1)/ret.board.table.length){
-                            ret.board.dist = board.dist - 1;
-                        }
-                        else{
-                            ret.board.dist = board.dist + 1;
-                        }
-                    
-                        //swap
-                        temp = ret.board.table[board.bucox][board.bucoy];
-                        ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox-1][board.bucoy];
-                        ret.board.table[board.bucox-1][board.bucoy] = temp;
-
-                        //update posizione buco, sale
-                        ret.board.bucox = (short)(board.bucox-1);
-                        ret.board.bucoy = board.bucoy;
-                    }
-                    lastSonChecked++;
-                }
-
-
-                if(ret==null && lastSonChecked==0){
-                    if(lastMove!=3 && board.bucoy > 0){          //swap a sx
-                    
-                        newBoard = new Board(board.table);
-
-                        ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)2);
-
-                        //aggiorno dist: real-expected, casella swappata va a dx
-                        if(board.bucoy-1 < (ret.board.table[board.bucox][board.bucoy-1]-1)%ret.board.table.length){
-                            ret.board.dist = board.dist - 1;
-                        }
-                        else{
-                            ret.board.dist = board.dist + 1;
-                        }
-
-                        temp = ret.board.table[board.bucox][board.bucoy];
-                        ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox][board.bucoy-1];
-                        ret.board.table[board.bucox][board.bucoy-1] = temp;
-
-                        //update buco, va a sx
-                        ret.board.bucoy = (short)(board.bucoy-1);
-                        ret.board.bucox = board.bucox;
-                    }
-                    lastSonChecked++;
-                }
-
-
-                if(ret==null && lastSonChecked==1){
-                    if(lastMove!=2 && board.bucoy < board.table.length-1){       //swap a dx
-                    
-                        newBoard = new Board(board.table);
-
-                        ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)3);
-
-                        //aggiorno dist: real-expected, casella swappata va a sx
-                        if(board.bucoy+1 > (ret.board.table[board.bucox][board.bucoy+1]-1)%ret.board.table.length){
-                            ret.board.dist = board.dist - 1;
-                        }
-                        else{
-                            ret.board.dist = board.dist + 1;
-                        }
+                if(lastMove!=4 && board.bucox > 0){          //swap in alto
                 
-                        temp = ret.board.table[board.bucox][board.bucoy];
-                        ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox][board.bucoy+1];
-                        ret.board.table[board.bucox][board.bucoy+1] = temp;
+                    newBoard = new Board(board.table);    //qua porei fregare la board se c'e' collisione e ho una dist minore
 
-                        //update buco, va a dx
-                        ret.board.bucoy = (short)(board.bucoy+1);
-                        ret.board.bucox = board.bucox;
+                    ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)1);
+
+                    //aggiorno dist: real-expected
+                    if(board.bucox-1 < (ret.board.table[board.bucox-1][board.bucoy]-1)/ret.board.table.length){
+                        ret.board.dist = board.dist - 1;
                     }
-                    lastSonChecked++;
-                }
-
-
-                if(ret==null && lastSonChecked==2){
-                    if(lastMove!=1 && board.bucox < board.table.length-1){      //swap in basso
-                    
-                        newBoard = new Board(board.table);
-
-                        ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)4);
-
-                        //aggiorno dist: real-expected
-                        if(board.bucox+1 > (ret.board.table[board.bucox+1][board.bucoy]-1)/ret.board.table.length){
-                            ret.board.dist = board.dist - 1;
-                        }
-                        else{
-                            ret.board.dist = board.dist + 1;
-                        }
-                    
-                        temp = ret.board.table[board.bucox][board.bucoy];
-                        ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox+1][board.bucoy];
-                        ret.board.table[board.bucox+1][board.bucoy] = temp;
-
-                        //update buco, va in basso
-                        ret.board.bucox = (short)(board.bucox+1);
-                        ret.board.bucoy = board.bucoy;
-
-                        //all'ultimo controllo elimino la entry
-                        //activeBoards.remove(this.board);
+                    else{
+                        ret.board.dist = board.dist + 1;
                     }
-                    lastSonChecked++;
+                
+                    //swap
+                    temp = ret.board.table[board.bucox][board.bucoy];
+                    ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox-1][board.bucoy];
+                    ret.board.table[board.bucox-1][board.bucoy] = temp;
+
+                    //update posizione buco, sale
+                    ret.board.bucox = (short)(board.bucox-1);
+                    ret.board.bucoy = board.bucoy;
+
+                    checkCollision(ret);
                 }
 
 
-                if(ret==null){
-                    return null;
+                if(lastMove!=3 && board.bucoy > 0){          //swap a sx
+                
+                    newBoard = new Board(board.table);
+
+                    ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)2);
+
+                    //aggiorno dist: real-expected, casella swappata va a dx
+                    if(board.bucoy-1 < (ret.board.table[board.bucox][board.bucoy-1]-1)%ret.board.table.length){
+                        ret.board.dist = board.dist - 1;
+                    }
+                    else{
+                        ret.board.dist = board.dist + 1;
+                    }
+
+                    temp = ret.board.table[board.bucox][board.bucoy];
+                    ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox][board.bucoy-1];
+                    ret.board.table[board.bucox][board.bucoy-1] = temp;
+
+                    //update buco, va a sx
+                    ret.board.bucoy = (short)(board.bucoy-1);
+                    ret.board.bucox = board.bucox;
+
+                    checkCollision(ret);
                 }
 
+
+                if(lastMove!=2 && board.bucoy < board.table.length-1){       //swap a dx
+                
+                    newBoard = new Board(board.table);
+
+                    ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)3);
+
+                    //aggiorno dist: real-expected, casella swappata va a sx
+                    if(board.bucoy+1 > (ret.board.table[board.bucox][board.bucoy+1]-1)%ret.board.table.length){
+                        ret.board.dist = board.dist - 1;
+                    }
+                    else{
+                        ret.board.dist = board.dist + 1;
+                    }
+            
+                    temp = ret.board.table[board.bucox][board.bucoy];
+                    ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox][board.bucoy+1];
+                    ret.board.table[board.bucox][board.bucoy+1] = temp;
+
+                    //update buco, va a dx
+                    ret.board.bucoy = (short)(board.bucoy+1);
+                    ret.board.bucox = board.bucox;
+
+                    checkCollision(ret);
+                }
+
+
+                if(lastMove!=1 && board.bucox < board.table.length-1){      //swap in basso
+                
+                    newBoard = new Board(board.table);
+
+                    ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)4);
+
+                    //aggiorno dist: real-expected
+                    if(board.bucox+1 > (ret.board.table[board.bucox+1][board.bucoy]-1)/ret.board.table.length){
+                        ret.board.dist = board.dist - 1;
+                    }
+                    else{
+                        ret.board.dist = board.dist + 1;
+                    }
+                
+                    temp = ret.board.table[board.bucox][board.bucoy];
+                    ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox+1][board.bucoy];
+                    ret.board.table[board.bucox+1][board.bucoy] = temp;
+
+                    //update buco, va in basso
+                    ret.board.bucox = (short)(board.bucox+1);
+                    ret.board.bucoy = board.bucoy;
+
+                    checkCollision(ret);
+                }
+
+            }
+
+
+            public static void checkCollision(TreeNode ret){
                 //se gia' esiste, agisco su activeBoards
                 TreeNode collisioner = activeBoards.get(ret.board);
                 if(collisioner != null){
 
-                    if(collisioner.board.dist+collisioner.moves <= board.dist+moves){
+                    if(collisioner.board.dist+collisioner.moves <= ret.board.dist+ret.moves){
                         ret = null;
                     }
                     else{
@@ -219,14 +202,15 @@ public class Solver{
                         pQueue.remove(collisioner);
                         collisioner = null;
 
-                        activeBoards.put(board, this);
+                        pQueue.add(ret);
+                        activeBoards.put(ret.board, ret);
                     }
                 }
                 else{
-                    activeBoards.put(board, this);
+                    pQueue.add(ret);
+                    activeBoards.put(ret.board, ret);
                 }
 
-                return ret;
             }
 
 
@@ -337,7 +321,16 @@ public class Solver{
 
         //Board tab = readInput(args[0]);
 
-        Tree.TreeNode radice = new Tree.TreeNode(tab, (short)(0), null, (byte)0);
+        Tree.TreeNode radice;
+
+        /*if(tab.table.length <= 4){
+            tab = (Board.Board16)(tab);
+            radice = new Tree.TreeNode16(tab, (short)(0), null, (byte)0);
+        }
+        else{*/
+            radice = new Tree.TreeNode(tab, (short)(0), null, (byte)0);
+        //}
+
         Tree albero = new Tree(radice);
 
         //albero.findSolver();
