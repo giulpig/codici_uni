@@ -1,9 +1,6 @@
-import java.util.Arrays;
-import java.util.BitSet;
-
 public class Board{
 
-    public class Board16 extends Board{
+    public static class Board16 extends Board{
         public long ctable = 0;
         byte lato;
 
@@ -11,11 +8,14 @@ public class Board{
             ;
         }
 
+        public Board16(long o){     //empty, for stealing(?)
+            ctable = o;
+        }
 
         public Board16(short[][] tiles){        //for copying
             lato = (byte)tiles.length;
             byte counter = 0;
-            for(int i=tiles.length-1; i>=0; i--){           //copio, calcolo hash
+            for(int i=tiles.length-1; i>=0; i--){           //copio
                 for(int j=tiles.length-1; j>=0; j--){
                     ctable |= (long)tiles[i][j] << counter;
                     counter += 4;
