@@ -1,22 +1,26 @@
 public class Board{
 
     //public static int[] npowers;
+    //public int hash = 2999;
+
+    public static int[][] shouldbe;
 
     public int[][] table = null;
-    public int bucox = -1;
-    public int bucoy = -1;
-    public int dist = -1;
+    public int bucox;
+    public int bucoy;
+    public short mdist;
+    public short cdist;
 
-
-    //public int hash = 2999;
 
     public Board(){     //empty, for stealing(?)
         ;
     }
 
-    public Board(int[][] tiles, boolean first){        //for first entry (calc hash)
+    public Board(int[][] tiles, boolean first){        //for first entry
         
         table = new int[tiles.length][tiles.length];
+
+        shouldbe = new int[tiles.length*tiles.length][2];
 
         //int ntemp = 1;
         //int ntiles = tiles.length * tiles.length;
@@ -24,11 +28,32 @@ public class Board{
         //npowers = new int[ntiles];
         //int count = 0;
 
-        for(int i=0; i<tiles.length; i++){           //copio, ***calcolo hash
+        for(int i=0; i<tiles.length; i++){           //copio, trovo buco, calcolo dist, ***calcolo hash
             for(int j=0; j<tiles.length; j++){
+
                 table[i][j] = tiles[i][j];
-                //npowers[count++] = ntemp;
-                //hash += table[i][j]*(ntemp*=ntiles);
+                if(table[i][j] != 0){
+
+                    shouldbe[table[i][j]][0] = (table[i][j]-1)/table.length;
+                    shouldbe[table[i][j]][1] = (table[i][j]-1)%table.length;
+
+                    mdist += Math.abs(i-shouldbe[table[i][j]][0]) + Math.abs(j-shouldbe[table[i][j]][1]);
+                    
+                    for(int k=j+1; k<tiles.length; k++){    //right check
+                        if(tiles[i][k]!=0 && shouldbe[table[i][j]][0]==i && (tiles[i][k]-1)/table.length==i && shouldbe[table[i][j]][1] > (tiles[i][k]-1)%table.length){
+                            cdist++;
+                        }
+                    }
+                    for(int k=i+1; k<tiles.length; k++){    //down check
+                        if(tiles[k][j]!=0 && shouldbe[table[i][j]][1]==j && (tiles[k][j]-1)%table.length==j && shouldbe[table[i][j]][0] > (tiles[k][j]-1)/table.length){
+                            cdist++;
+                        }
+                    }
+                }
+                else{
+                    bucox = i;
+                    bucoy = j;
+                }                
             }
         }
     }
@@ -72,12 +97,12 @@ public class Board{
 
 
     public int manhattan(){
-        return dist;
+        return mdist;
     }
 
     public void calcManhattan(){
         
-        int ret = 0;
+        short ret = 0;
 
         for(int i=0; i<table.length; i++){                     //calcolo distanza e trovo buco
             for(int j=0; j<table.length; j++){
@@ -90,7 +115,7 @@ public class Board{
             }
         }
 
-        dist = ret;
+        mdist = ret;
     }
 
 
@@ -116,7 +141,7 @@ public class Board{
     @Override
     public boolean equals(Object o){
 
-        if(dist != ((Board)(o)).dist || bucox != ((Board)(o)).bucox || bucoy != ((Board)(o)).bucoy){
+        if(mdist != ((Board)(o)).mdist || bucox != ((Board)(o)).bucox || bucoy != ((Board)(o)).bucoy || cdist != ((Board)(o)).cdist){
             //System.out.println("Non Conflitto");
             return false;
         }
