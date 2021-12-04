@@ -6,7 +6,6 @@ import java.io.*;       //Input/Output
 
 
 public class Solver{
-
     static public int counter = 0;    //to remove
 
     ////////////////////////////////////////////
@@ -112,18 +111,18 @@ public class Solver{
 
                     //update linear confict
                     for(int i=0; i<board.bucoy; i++){
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][0] == board.bucox-1 && Board.shouldbe[board.table[board.bucox-1][i]][0] == board.bucox-1 && Board.shouldbe[board.table[board.bucox][board.bucoy]][1] < Board.shouldbe[board.table[board.bucox-1][i]][1]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox-1 && Board.shouldbe[ret.board.table[board.bucox-1][i]][0] == board.bucox-1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] < Board.shouldbe[ret.board.table[board.bucox-1][i]][1]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][0] == board.bucox && Board.shouldbe[board.table[board.bucox][i]][0] == board.bucox && Board.shouldbe[board.table[board.bucox][board.bucoy]][1] < Board.shouldbe[board.table[board.bucox][i]][1]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][i]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] < Board.shouldbe[ret.board.table[board.bucox][i]][1]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
                     for(int i=board.bucoy+1; i<board.table.length; i++){
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][0] == board.bucox-1 && Board.shouldbe[board.table[board.bucox-1][i]][0] == board.bucox-1 && Board.shouldbe[board.table[board.bucox][board.bucoy]][1] > Board.shouldbe[board.table[board.bucox-1][i]][1]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox-1 && Board.shouldbe[ret.board.table[board.bucox-1][i]][0] == board.bucox-1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] > Board.shouldbe[ret.board.table[board.bucox-1][i]][1]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][0] == board.bucox && Board.shouldbe[board.table[board.bucox][i]][0] == board.bucox && Board.shouldbe[board.table[board.bucox][board.bucoy]][1] > Board.shouldbe[board.table[board.bucox][i]][1]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][i]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] > Board.shouldbe[ret.board.table[board.bucox][i]][1]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
@@ -165,18 +164,18 @@ public class Solver{
 
                     //update linear confict
                     for(int i=0; i<board.bucox; i++){
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][1] == board.bucoy-1 && Board.shouldbe[board.table[i][board.bucoy-1]][1] == board.bucoy-1 && Board.shouldbe[board.table[board.bucox][board.bucoy]][0] < Board.shouldbe[board.table[i][board.bucoy-1]][0]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy-1 && Board.shouldbe[ret.board.table[i][board.bucoy-1]][1] == board.bucoy-1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] < Board.shouldbe[ret.board.table[i][board.bucoy-1]][0]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][1] == board.bucoy && Board.shouldbe[board.table[i][board.bucoy]][1] == board.bucoy && Board.shouldbe[board.table[board.bucox][board.bucoy]][0] < Board.shouldbe[board.table[i][board.bucoy]][0]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[i][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] < Board.shouldbe[ret.board.table[i][board.bucoy]][0]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
                     for(int i=board.bucox+1; i<board.table.length; i++){
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][1] == board.bucoy-1 && Board.shouldbe[board.table[i][board.bucoy-1]][1] == board.bucoy-1 && Board.shouldbe[board.table[board.bucox][board.bucoy]][0] > Board.shouldbe[board.table[i][board.bucoy-1]][0]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy-1 && Board.shouldbe[ret.board.table[i][board.bucoy-1]][1] == board.bucoy-1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] > Board.shouldbe[ret.board.table[i][board.bucoy-1]][0]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][1] == board.bucoy && Board.shouldbe[board.table[i][board.bucoy]][1] == board.bucoy && Board.shouldbe[board.table[board.bucox][board.bucoy]][0] > Board.shouldbe[board.table[i][board.bucoy]][0]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[i][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] > Board.shouldbe[ret.board.table[i][board.bucoy]][0]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
@@ -219,18 +218,18 @@ public class Solver{
 
                     //update linear confict
                     for(int i=0; i<board.bucox; i++){
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][1] == board.bucoy+1 && Board.shouldbe[board.table[i][board.bucoy+1]][1] == board.bucoy+1 && Board.shouldbe[board.table[board.bucox][board.bucoy]][0] < Board.shouldbe[board.table[i][board.bucoy+1]][0]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy+1 && Board.shouldbe[ret.board.table[i][board.bucoy+1]][1] == board.bucoy+1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] < Board.shouldbe[ret.board.table[i][board.bucoy+1]][0]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][1] == board.bucoy && Board.shouldbe[board.table[i][board.bucoy]][1] == board.bucoy && Board.shouldbe[board.table[board.bucox][board.bucoy]][0] < Board.shouldbe[board.table[i][board.bucoy]][0]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[i][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] < Board.shouldbe[ret.board.table[i][board.bucoy]][0]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
                     for(int i=board.bucox+1; i<board.table.length; i++){
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][1] == board.bucoy+1 && Board.shouldbe[board.table[i][board.bucoy+1]][1] == board.bucoy+1 && Board.shouldbe[board.table[board.bucox][board.bucoy]][0] > Board.shouldbe[board.table[i][board.bucoy+1]][0]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy+1 && Board.shouldbe[ret.board.table[i][board.bucoy+1]][1] == board.bucoy+1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] > Board.shouldbe[ret.board.table[i][board.bucoy+1]][0]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][1] == board.bucoy && Board.shouldbe[board.table[i][board.bucoy]][1] == board.bucoy && Board.shouldbe[board.table[board.bucox][board.bucoy]][0] > Board.shouldbe[board.table[i][board.bucoy]][0]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[i][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] > Board.shouldbe[ret.board.table[i][board.bucoy]][0]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
@@ -271,18 +270,18 @@ public class Solver{
 
                     //update linear confict
                     for(int i=0; i<board.bucoy; i++){
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][0] == board.bucox+1 && Board.shouldbe[board.table[board.bucox+1][i]][0] == board.bucox+1 && Board.shouldbe[board.table[board.bucox][board.bucoy]][1] < Board.shouldbe[board.table[board.bucox+1][i]][1]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox+1 && Board.shouldbe[ret.board.table[board.bucox+1][i]][0] == board.bucox+1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] < Board.shouldbe[ret.board.table[board.bucox+1][i]][1]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][0] == board.bucox && Board.shouldbe[board.table[board.bucox][i]][0] == board.bucox && Board.shouldbe[board.table[board.bucox][board.bucoy]][1] < Board.shouldbe[board.table[board.bucox][i]][1]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][i]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] < Board.shouldbe[ret.board.table[board.bucox][i]][1]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
                     for(int i=board.bucoy+1; i<board.table.length; i++){
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][0] == board.bucox+1 && Board.shouldbe[board.table[board.bucox+1][i]][0] == board.bucox+1 && Board.shouldbe[board.table[board.bucox][board.bucoy]][1] > Board.shouldbe[board.table[board.bucox+1][i]][1]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox+1 && Board.shouldbe[ret.board.table[board.bucox+1][i]][0] == board.bucox+1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] > Board.shouldbe[ret.board.table[board.bucox+1][i]][1]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[board.table[board.bucox][board.bucoy]][0] == board.bucox && Board.shouldbe[board.table[board.bucox][i]][0] == board.bucox && Board.shouldbe[board.table[board.bucox][board.bucoy]][1] > Board.shouldbe[board.table[board.bucox][i]][1]){
+                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][i]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] > Board.shouldbe[ret.board.table[board.bucox][i]][1]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
