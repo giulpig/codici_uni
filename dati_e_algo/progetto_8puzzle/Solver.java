@@ -86,12 +86,14 @@ public class Solver{
 
                 if(lastMove!=4 && board.bucox > 0){          //swap in alto
                 
-                    newBoard = new Board(board.table);    //qua porei fregare la board se c'e' collisione e ho una dist minore
+                    newBoard = new Board(board.compressed);    //qua porei fregare la board se c'e' collisione e ho una dist minore
 
                     ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)1);
 
+                    
+
                     //aggiorno dist: real-expected
-                    if(Board.shouldbe[ret.board.table[board.bucox-1][board.bucoy]][0] >= board.bucox){
+                    if(Board.shouldbe[ret.board.getTile(board.bucox-1, board.bucoy)][0] >= board.bucox){
                         ret.board.mdist = (short)(board.mdist - 1);
                     }
                     else{
@@ -102,8 +104,8 @@ public class Solver{
                     //ret.board.hash = board.hash + ret.board.table[board.bucox-1][board.bucoy] * (Board.npowers[board.table.length*(board.bucox)+board.bucoy] - Board.npowers[board.table.length*(board.bucox-1)+board.bucoy]);
 
                     //swap
-                    ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox-1][board.bucoy];
-                    ret.board.table[board.bucox-1][board.bucoy] = 0;
+                    ret.board.setTile(board.bucox, board.bucoy, ret.board.getTile(board.bucox-1, board.bucoy));
+                    ret.board.setTile(board.bucox-1, board.bucoy, 0);
 
                     if(ret.board.mdist == 0){
                         return ret;
@@ -111,18 +113,18 @@ public class Solver{
 
                     //update linear confict
                     for(int i=0; i<board.bucoy; i++){
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox-1 && Board.shouldbe[ret.board.table[board.bucox-1][i]][0] == board.bucox-1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] < Board.shouldbe[ret.board.table[board.bucox-1][i]][1]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] == board.bucox-1 && Board.shouldbe[ret.board.getTile(board.bucox-1, i)][0] == board.bucox-1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] < Board.shouldbe[ret.board.getTile(board.bucox-1, i)][1]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][i]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] < Board.shouldbe[ret.board.table[board.bucox][i]][1]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] == board.bucox && Board.shouldbe[ret.board.getTile(board.bucox, i)][0] == board.bucox && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] < Board.shouldbe[ret.board.getTile(board.bucox, i)][1]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
                     for(int i=board.bucoy+1; i<Board.lato; i++){
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox-1 && Board.shouldbe[ret.board.table[board.bucox-1][i]][0] == board.bucox-1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] > Board.shouldbe[ret.board.table[board.bucox-1][i]][1]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] == board.bucox-1 && Board.shouldbe[ret.board.getTile(board.bucox-1, i)][0] == board.bucox-1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] > Board.shouldbe[ret.board.getTile(board.bucox-1, i)][1]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][i]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] > Board.shouldbe[ret.board.table[board.bucox][i]][1]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] == board.bucox && Board.shouldbe[ret.board.getTile(board.bucox, i)][0] == board.bucox && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] > Board.shouldbe[ret.board.getTile(board.bucox, i)][1]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
@@ -139,12 +141,12 @@ public class Solver{
 
                 if(lastMove!=3 && board.bucoy > 0){          //swap a sx
                 
-                    newBoard = new Board(board.table);
+                    newBoard = new Board(board.compressed);
 
                     ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)2);
 
                     //aggiorno dist: real-expected, casella swappata va a dx
-                    if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy-1]][1] >= board.bucoy){
+                    if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy-1)][1] >= board.bucoy){
                         ret.board.mdist = (short)(board.mdist - 1);
                     }
                     else{
@@ -152,8 +154,8 @@ public class Solver{
                     }
 
                     //swap
-                    ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox][board.bucoy-1];
-                    ret.board.table[board.bucox][board.bucoy-1] = 0;
+                    ret.board.setTile(board.bucox, board.bucoy, ret.board.getTile(board.bucox, board.bucoy-1));
+                    ret.board.setTile(board.bucox, board.bucoy-1, 0);
 
                     if(ret.board.mdist == 0){
                         return ret;
@@ -164,18 +166,18 @@ public class Solver{
 
                     //update linear confict
                     for(int i=0; i<board.bucox; i++){
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy-1 && Board.shouldbe[ret.board.table[i][board.bucoy-1]][1] == board.bucoy-1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] < Board.shouldbe[ret.board.table[i][board.bucoy-1]][0]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] == board.bucoy-1 && Board.shouldbe[ret.board.getTile(i, board.bucoy-1)][1] == board.bucoy-1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] < Board.shouldbe[ret.board.getTile(i, board.bucoy-1)][0]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[i][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] < Board.shouldbe[ret.board.table[i][board.bucoy]][0]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] == board.bucoy && Board.shouldbe[ret.board.getTile(i, board.bucoy)][1] == board.bucoy && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] < Board.shouldbe[ret.board.getTile(i, board.bucoy)][0]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
                     for(int i=board.bucox+1; i<Board.lato; i++){
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy-1 && Board.shouldbe[ret.board.table[i][board.bucoy-1]][1] == board.bucoy-1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] > Board.shouldbe[ret.board.table[i][board.bucoy-1]][0]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] == board.bucoy-1 && Board.shouldbe[ret.board.getTile(i, board.bucoy-1)][1] == board.bucoy-1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] > Board.shouldbe[ret.board.getTile(i, board.bucoy-1)][0]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[i][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] > Board.shouldbe[ret.board.table[i][board.bucoy]][0]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] == board.bucoy && Board.shouldbe[ret.board.getTile(i, board.bucoy)][1] == board.bucoy && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] > Board.shouldbe[ret.board.getTile(i, board.bucoy)][0]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
@@ -192,12 +194,12 @@ public class Solver{
 
                 if(lastMove!=2 && board.bucoy < Board.lato-1){       //swap a dx
                 
-                    newBoard = new Board(board.table);
+                    newBoard = new Board(board.compressed);
 
                     ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)3);
 
                     //aggiorno dist: real-expected, casella swappata va a sx
-                    if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy+1]][1] <= board.bucoy){
+                    if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy+1)][1] <= board.bucoy){
                         ret.board.mdist = (short)(board.mdist - 1);
                     }
                     else{
@@ -205,8 +207,8 @@ public class Solver{
                     }
 
                     //swap
-                    ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox][board.bucoy+1];
-                    ret.board.table[board.bucox][board.bucoy+1] = 0;
+                    ret.board.setTile(board.bucox, board.bucoy, ret.board.getTile(board.bucox, board.bucoy+1));
+                    ret.board.setTile(board.bucox, board.bucoy+1, 0);
 
                     if(ret.board.mdist == 0){
                         return ret;
@@ -218,18 +220,18 @@ public class Solver{
 
                     //update linear confict
                     for(int i=0; i<board.bucox; i++){
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy+1 && Board.shouldbe[ret.board.table[i][board.bucoy+1]][1] == board.bucoy+1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] < Board.shouldbe[ret.board.table[i][board.bucoy+1]][0]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] == board.bucoy+1 && Board.shouldbe[ret.board.getTile(i, board.bucoy+1)][1] == board.bucoy+1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] < Board.shouldbe[ret.board.getTile(i, board.bucoy+1)][0]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[i][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] < Board.shouldbe[ret.board.table[i][board.bucoy]][0]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] == board.bucoy && Board.shouldbe[ret.board.getTile(i, board.bucoy)][1] == board.bucoy && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] < Board.shouldbe[ret.board.getTile(i, board.bucoy)][0]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
                     for(int i=board.bucox+1; i<Board.lato; i++){
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy+1 && Board.shouldbe[ret.board.table[i][board.bucoy+1]][1] == board.bucoy+1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] > Board.shouldbe[ret.board.table[i][board.bucoy+1]][0]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] == board.bucoy+1 && Board.shouldbe[ret.board.getTile(i, board.bucoy+1)][1] == board.bucoy+1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] > Board.shouldbe[ret.board.getTile(i, board.bucoy+1)][0]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[i][board.bucoy]][1] == board.bucoy && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] > Board.shouldbe[ret.board.table[i][board.bucoy]][0]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] == board.bucoy && Board.shouldbe[ret.board.getTile(i, board.bucoy)][1] == board.bucoy && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] > Board.shouldbe[ret.board.getTile(i, board.bucoy)][0]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
@@ -245,12 +247,12 @@ public class Solver{
 
                 if(lastMove!=1 && board.bucox < Board.lato-1){      //swap in basso
                 
-                    newBoard = new Board(board.table);
+                    newBoard = new Board(board.compressed);
 
                     ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)4);
 
                     //aggiorno dist: real-expected
-                    if(Board.shouldbe[ret.board.table[board.bucox+1][board.bucoy]][0] <= board.bucox){
+                    if(Board.shouldbe[ret.board.getTile(board.bucox+1, board.bucoy)][0] <= board.bucox){
                         ret.board.mdist = (short)(board.mdist - 1);
                     }
                     else{
@@ -261,8 +263,8 @@ public class Solver{
                     //ret.board.hash = board.hash + ret.board.table[board.bucox+1][board.bucoy] * (Board.npowers[board.table.length*(board.bucox)+board.bucoy] - Board.npowers[board.table.length*(board.bucox+1)+board.bucoy]);
 
                     //swap
-                    ret.board.table[board.bucox][board.bucoy] = ret.board.table[board.bucox+1][board.bucoy];
-                    ret.board.table[board.bucox+1][board.bucoy] = 0;
+                    ret.board.setTile(board.bucox, board.bucoy, ret.board.getTile(board.bucox+1, board.bucoy));
+                    ret.board.setTile(board.bucox+1, board.bucoy, 0);
 
                     if(ret.board.mdist == 0){
                         return ret;
@@ -270,18 +272,18 @@ public class Solver{
 
                     //update linear confict
                     for(int i=0; i<board.bucoy; i++){
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox+1 && Board.shouldbe[ret.board.table[board.bucox+1][i]][0] == board.bucox+1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] < Board.shouldbe[ret.board.table[board.bucox+1][i]][1]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] == board.bucox+1 && Board.shouldbe[ret.board.getTile(board.bucox+1, i)][0] == board.bucox+1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] < Board.shouldbe[ret.board.getTile(board.bucox+1, i)][1]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][i]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] < Board.shouldbe[ret.board.table[board.bucox][i]][1]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] == board.bucox && Board.shouldbe[ret.board.getTile(board.bucox, i)][0] == board.bucox && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] < Board.shouldbe[ret.board.getTile(board.bucox, i)][1]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
                     for(int i=board.bucoy+1; i<Board.lato; i++){
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox+1 && Board.shouldbe[ret.board.table[board.bucox+1][i]][0] == board.bucox+1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] > Board.shouldbe[ret.board.table[board.bucox+1][i]][1]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] == board.bucox+1 && Board.shouldbe[ret.board.getTile(board.bucox+1, i)][0] == board.bucox+1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] > Board.shouldbe[ret.board.getTile(board.bucox+1, i)][1]){
                             ret.board.cdist--;      //remove old confl
                         }
-                        if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][i]][0] == board.bucox && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] > Board.shouldbe[ret.board.table[board.bucox][i]][1]){
+                        if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] == board.bucox && Board.shouldbe[ret.board.getTile(board.bucox, i)][0] == board.bucox && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] > Board.shouldbe[ret.board.getTile(board.bucox, i)][1]){
                             ret.board.cdist++;      //add new confl.
                         }
                     }
