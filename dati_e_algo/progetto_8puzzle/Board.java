@@ -5,6 +5,7 @@ public class Board{
 
     public static int[][] shouldbe;
 
+    public String stringa_no_spaces;
     public int[][] table = null;
     public int bucox;
     public int bucoy;
@@ -22,6 +23,8 @@ public class Board{
 
         shouldbe = new int[tiles.length*tiles.length][2];
 
+        StringBuilder builder = new StringBuilder();
+
         //int ntemp = 1;
         //int ntiles = tiles.length * tiles.length;
 
@@ -32,6 +35,8 @@ public class Board{
             for(int j=0; j<tiles.length; j++){
 
                 table[i][j] = tiles[i][j];
+                builder.append(tiles[i][j] + "");
+
                 if(table[i][j] != 0){
 
                     shouldbe[table[i][j]][0] = (table[i][j]-1)/table.length;
@@ -56,22 +61,30 @@ public class Board{
                 }                
             }
         }
+
+        builder.setLength(builder.length() - 1);
+        stringa_no_spaces = builder.toString();
     }
+
 
     public Board(int[][] tiles){        //for copying
         table = new int[tiles.length][tiles.length];
+        StringBuilder builder = new StringBuilder();
 
         for(int i=0; i<tiles.length; i++){
             for(int j=0; j<tiles.length; j++){
                 table[i][j] = tiles[i][j];
+                builder.append(tiles[i][j] + "");
             }
         }
+
+        stringa_no_spaces = builder.toString();
     }
 
 
     public final String toString(){
         
-        StringBuffer ret = new StringBuffer();
+        StringBuilder ret = new StringBuilder();
         for(int i=0; i<table.length; i++){
             for(int j=0; j<table.length; j++){
                 if(i*table.length+j == table.length*table.length-1)
@@ -86,13 +99,15 @@ public class Board{
 
     public final String toStringNoSpaces(){
         
-        StringBuffer ret = new StringBuffer();
+        return stringa_no_spaces;
+
+        /*StringBuilder ret = new StringBuilder();
         for(int i=0; i<table.length; i++){
             for(int j=0; j<table.length; j++){
                 ret.append(table[i][j]);
             }
         }
-        return ret.toString();
+        return ret.toString();*/
     }
 
 
@@ -135,7 +150,7 @@ public class Board{
     @Override
     public int hashCode(){          ///////////////////////////WORK IN PROGESS
         //return hash;
-        return toStringNoSpaces().hashCode();
+        return stringa_no_spaces.hashCode();
     }
 
     @Override
@@ -143,6 +158,10 @@ public class Board{
 
         if(mdist != ((Board)(o)).mdist || bucox != ((Board)(o)).bucox || bucoy != ((Board)(o)).bucoy || cdist != ((Board)(o)).cdist){
             //System.out.println("Non Conflitto");
+            return false;
+        }
+
+        if(!stringa_no_spaces.equals(((Board)(o)).stringa_no_spaces)){
             return false;
         }
         

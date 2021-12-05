@@ -34,9 +34,9 @@ public class Solver{
                 if(winner != null)   //true->win, also updates activeBoards and pQueue
                     return winner;
 
-                if(current.moves > lastLevel){
-                    System.out.print("\r" + (current.moves) + "   ");
-                    lastLevel = (short)(current.moves);
+                if(current.moves+2*current.board.cdist+current.board.mdist > lastLevel){
+                    System.out.print("\r" + (current.moves+2*current.board.cdist+current.board.mdist) + "   ");
+                    lastLevel = (short)(current.moves+2*current.board.cdist+current.board.mdist);
                 }
                 //System.out.print("\r" + nodes + " ");
                 //System.out.print("\r" + current.sons.length);
