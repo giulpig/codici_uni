@@ -4,26 +4,27 @@ public class Board{
     //public int hash = 2999;
 
     public static int[][] shouldbe;
+    public static int bitsPerNum;
+    public static int lato;
 
-    public String stringa_no_spaces;
-    public int[][] table = null;
+    public long[] compressed;
+    public int[][] table;
     public int bucox;
     public int bucoy;
     public short mdist;
     public short cdist;
 
 
-    public Board(){     //empty, for stealing(?)
-        ;
-    }
-
     public Board(int[][] tiles, boolean first){        //for first entry
+
+        lato = tiles.length;
+        bitsPerNum = 31 - Integer.numberOfLeadingZeros(lato*lato);
         
-        table = new int[tiles.length][tiles.length];
+        table = new int[lato][lato];
 
-        shouldbe = new int[tiles.length*tiles.length][2];
+        shouldbe = new int[lato*lato][2];
 
-        StringBuilder builder = new StringBuilder();
+        compressed = new long[bitsPerNum*lato/64];
 
         //int ntemp = 1;
         //int ntiles = tiles.length * tiles.length;
@@ -31,26 +32,25 @@ public class Board{
         //npowers = new int[ntiles];
         //int count = 0;
 
-        for(int i=0; i<tiles.length; i++){           //copio, trovo buco, calcolo dist, ***calcolo hash
-            for(int j=0; j<tiles.length; j++){
+        for(int i=0; i<lato; i++){           //copio, trovo buco, calcolo dist, ***calcolo hash
+            for(int j=0; j<lato; j++){
 
                 table[i][j] = tiles[i][j];
-                builder.append(tiles[i][j] + "");
 
                 if(table[i][j] != 0){
 
-                    shouldbe[table[i][j]][0] = (table[i][j]-1)/table.length;
-                    shouldbe[table[i][j]][1] = (table[i][j]-1)%table.length;
+                    shouldbe[table[i][j]][0] = (table[i][j]-1)/lato;
+                    shouldbe[table[i][j]][1] = (table[i][j]-1)%lato;
 
                     mdist += Math.abs(i-shouldbe[table[i][j]][0]) + Math.abs(j-shouldbe[table[i][j]][1]);
                     
-                    for(int k=j+1; k<tiles.length; k++){    //right check
-                        if(tiles[i][k]!=0 && shouldbe[table[i][j]][0]==i && (tiles[i][k]-1)/table.length==i && shouldbe[table[i][j]][1] > (tiles[i][k]-1)%table.length){
+                    for(int k=j+1; k<lato; k++){    //right check
+                        if(tiles[i][k]!=0 && shouldbe[table[i][j]][0]==i && (tiles[i][k]-1)/lato==i && shouldbe[table[i][j]][1] > (tiles[i][k]-1)%lato){
                             cdist++;
                         }
                     }
-                    for(int k=i+1; k<tiles.length; k++){    //down check
-                        if(tiles[k][j]!=0 && shouldbe[table[i][j]][1]==j && (tiles[k][j]-1)%table.length==j && shouldbe[table[i][j]][0] > (tiles[k][j]-1)/table.length){
+                    for(int k=i+1; k<lato; k++){    //down check
+                        if(tiles[k][j]!=0 && shouldbe[table[i][j]][1]==j && (tiles[k][j]-1)%lato==j && shouldbe[table[i][j]][0] > (tiles[k][j]-1)/lato){
                             cdist++;
                         }
                     }
@@ -61,33 +61,26 @@ public class Board{
                 }                
             }
         }
-
-        builder.setLength(builder.length() - 1);
-        stringa_no_spaces = builder.toString();
     }
 
 
     public Board(int[][] tiles){        //for copying
-        table = new int[tiles.length][tiles.length];
-        StringBuilder builder = new StringBuilder();
+        table = new int[lato][lato];
 
-        for(int i=0; i<tiles.length; i++){
-            for(int j=0; j<tiles.length; j++){
+        for(int i=0; i<lato; i++){
+            for(int j=0; j<lato; j++){
                 table[i][j] = tiles[i][j];
-                builder.append(tiles[i][j] + "");
             }
         }
-
-        stringa_no_spaces = builder.toString();
     }
 
 
     public final String toString(){
         
         StringBuilder ret = new StringBuilder();
-        for(int i=0; i<table.length; i++){
-            for(int j=0; j<table.length; j++){
-                if(i*table.length+j == table.length*table.length-1)
+        for(int i=0; i<lato; i++){
+            for(int j=0; j<lato; j++){
+                if(i*lato+j == lato*lato-1)
                     ret.append(table[i][j]);
                 else
                     ret.append(table[i][j] + " ");
@@ -98,16 +91,14 @@ public class Board{
 
 
     public final String toStringNoSpaces(){
-        
-        return stringa_no_spaces;
 
-        /*StringBuilder ret = new StringBuilder();
-        for(int i=0; i<table.length; i++){
-            for(int j=0; j<table.length; j++){
+        StringBuilder ret = new StringBuilder();
+        for(int i=0; i<lato; i++){
+            for(int j=0; j<lato; j++){
                 ret.append(table[i][j]);
             }
         }
-        return ret.toString();*/
+        return ret.toString();
     }
 
 
@@ -119,14 +110,10 @@ public class Board{
         
         short ret = 0;
 
-        for(int i=0; i<table.length; i++){                     //calcolo distanza e trovo buco
-            for(int j=0; j<table.length; j++){
+        for(int i=0; i<lato; i++){                     //calcolo distanza
+            for(int j=0; j<lato; j++){
                 if(table[i][j] != 0)
-                    ret += Math.abs(i-(table[i][j]-1)/table.length) + Math.abs(j-(table[i][j]-1)%table.length);
-                else{
-                    bucox = i;
-                    bucoy = j;
-                }
+                    ret += Math.abs(i-(table[i][j]-1)/lato) + Math.abs(j-(table[i][j]-1)%lato);
             }
         }
 
@@ -137,20 +124,23 @@ public class Board{
     //////////////////////////////MAYBE COMPRESS??
     public void compress(){
         
-        for(int i=0; i<table.length; i++){
-            for(int j=0; j<table.length; j++){
+        for(int i=0; i<lato; i++){
+            for(int j=0; j<lato; j++){
                 
             }
         }
 
     }
 
+    public static void setTile(int i, int j, int v){
+        int index = i*lato;
+    }
 
 
     @Override
     public int hashCode(){          ///////////////////////////WORK IN PROGESS
         //return hash;
-        return stringa_no_spaces.hashCode();
+        return toStringNoSpaces().hashCode();
     }
 
     @Override
@@ -160,13 +150,9 @@ public class Board{
             //System.out.println("Non Conflitto");
             return false;
         }
-
-        if(!stringa_no_spaces.equals(((Board)(o)).stringa_no_spaces)){
-            return false;
-        }
         
-        for(int i=0; i<table.length; i++){
-            for(int j=0; j<table.length; j++){
+        for(int i=0; i<lato; i++){
+            for(int j=0; j<lato; j++){
                 if(table[i][j] != ((Board)(o)).table[i][j])
                     return false;
             }

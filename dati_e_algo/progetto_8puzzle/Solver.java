@@ -118,7 +118,7 @@ public class Solver{
                             ret.board.cdist++;      //add new confl.
                         }
                     }
-                    for(int i=board.bucoy+1; i<board.table.length; i++){
+                    for(int i=board.bucoy+1; i<Board.lato; i++){
                         if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox-1 && Board.shouldbe[ret.board.table[board.bucox-1][i]][0] == board.bucox-1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] > Board.shouldbe[ret.board.table[board.bucox-1][i]][1]){
                             ret.board.cdist--;      //remove old confl
                         }
@@ -171,7 +171,7 @@ public class Solver{
                             ret.board.cdist++;      //add new confl.
                         }
                     }
-                    for(int i=board.bucox+1; i<board.table.length; i++){
+                    for(int i=board.bucox+1; i<Board.lato; i++){
                         if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy-1 && Board.shouldbe[ret.board.table[i][board.bucoy-1]][1] == board.bucoy-1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] > Board.shouldbe[ret.board.table[i][board.bucoy-1]][0]){
                             ret.board.cdist--;      //remove old confl
                         }
@@ -190,7 +190,7 @@ public class Solver{
                 }
 
 
-                if(lastMove!=2 && board.bucoy < board.table.length-1){       //swap a dx
+                if(lastMove!=2 && board.bucoy < Board.lato-1){       //swap a dx
                 
                     newBoard = new Board(board.table);
 
@@ -225,7 +225,7 @@ public class Solver{
                             ret.board.cdist++;      //add new confl.
                         }
                     }
-                    for(int i=board.bucox+1; i<board.table.length; i++){
+                    for(int i=board.bucox+1; i<Board.lato; i++){
                         if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] == board.bucoy+1 && Board.shouldbe[ret.board.table[i][board.bucoy+1]][1] == board.bucoy+1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] > Board.shouldbe[ret.board.table[i][board.bucoy+1]][0]){
                             ret.board.cdist--;      //remove old confl
                         }
@@ -243,7 +243,7 @@ public class Solver{
                 }
 
 
-                if(lastMove!=1 && board.bucox < board.table.length-1){      //swap in basso
+                if(lastMove!=1 && board.bucox < Board.lato-1){      //swap in basso
                 
                     newBoard = new Board(board.table);
 
@@ -277,7 +277,7 @@ public class Solver{
                             ret.board.cdist++;      //add new confl.
                         }
                     }
-                    for(int i=board.bucoy+1; i<board.table.length; i++){
+                    for(int i=board.bucoy+1; i<Board.lato; i++){
                         if(Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][0] == board.bucox+1 && Board.shouldbe[ret.board.table[board.bucox+1][i]][0] == board.bucox+1 && Board.shouldbe[ret.board.table[board.bucox][board.bucoy]][1] > Board.shouldbe[ret.board.table[board.bucox+1][i]][1]){
                             ret.board.cdist--;      //remove old confl
                         }
