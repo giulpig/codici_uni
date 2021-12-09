@@ -25,7 +25,12 @@ public class Board{
         bitsPerNum = 32 - Integer.numberOfLeadingZeros(lato*lato);
         mask = (1<<bitsPerNum) - 1;
         numsPerLong = 64/bitsPerNum;
-        longs = (int)(Math.ceil(bitsPerNum*lato*lato/64.0));
+        //longs = (int)(Math.ceil(lato*lato/(double)numsPerLong));   <-NOT SAFE!
+        int remainder = lato*lato;
+        do{
+            longs++;
+        }
+        while((remainder-=numsPerLong) > 0);
 
         shouldbe = new int[lato*lato][2];
 
@@ -47,12 +52,12 @@ public class Board{
                     
                     for(int k=j+1; k<lato; k++){    //right check
                         if(tiles[i][k]!=0 && shouldbe[tile][0]==i && (tiles[i][k]-1)/lato==i && shouldbe[tile][1] > (tiles[i][k]-1)%lato){
-                            cdist++;
+                            cdist+=2;
                         }
                     }
                     for(int k=i+1; k<lato; k++){    //down check
                         if(tiles[k][j]!=0 && shouldbe[tile][1]==j && (tiles[k][j]-1)%lato==j && shouldbe[tile][0] > (tiles[k][j]-1)/lato){
-                            cdist++;
+                            cdist+=2;
                         }
                     }
                 }
