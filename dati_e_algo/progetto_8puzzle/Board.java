@@ -2,9 +2,6 @@ import java.util.Arrays;
 
 public class Board{
 
-    //public static int[] npowers;
-    //public int hash = 2999;
-
     public static int[][] shouldbe;
     public static int bitsPerNum;
     public static int lato;
@@ -141,7 +138,6 @@ public class Board{
     public boolean equals(Object o){
 
         if(mdist != ((Board)(o)).mdist || bucox != ((Board)(o)).bucox || bucoy != ((Board)(o)).bucoy || cdist != ((Board)(o)).cdist){
-            //System.out.println("Non Conflitto");
             return false;
         }
         
@@ -149,7 +145,6 @@ public class Board{
             if(compressed[i] != ((Board)(o)).compressed[i])
                 return false;
         }
-        //System.out.println("Conflitto");
         return true;
     }
 
