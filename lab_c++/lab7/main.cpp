@@ -1,8 +1,12 @@
 #include "Robot.h"
 #include "RightHandRobot.h"
 #include "RandomRobot.h"
+#include "SmartRobot.h"
 #include "Maze.h"
 #include "Coords.h"
+
+#include <memory>
+#include <vector>
 
 
 using namespace std;
@@ -38,7 +42,7 @@ int main(){
 
     Maze labirinto{"input.txt"};
     //labirinto.print();
-    RandomRobot lello{labirinto};
+    SmartRobot lello{labirinto};
     printAll(labirinto, lello);
 
     while(!lello.win(labirinto)){
