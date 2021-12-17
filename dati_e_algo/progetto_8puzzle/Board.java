@@ -50,11 +50,13 @@ public class Board{
                     for(int k=j+1; k<lato; k++){    //right check
                         if(tiles[i][k]!=0 && shouldbe[tile][0]==i && (tiles[i][k]-1)/lato==i && shouldbe[tile][1] > (tiles[i][k]-1)%lato){
                             cdist+=2;
+                            System.out.println("\nConflitto tra " + tiles[i][k] + " e " + tiles[i][j]);
                         }
                     }
                     for(int k=i+1; k<lato; k++){    //down check
                         if(tiles[k][j]!=0 && shouldbe[tile][1]==j && (tiles[k][j]-1)%lato==j && shouldbe[tile][0] > (tiles[k][j]-1)/lato){
                             cdist+=2;
+                            System.out.println("\nConflitto tra " + tiles[k][j] + " e " + tiles[i][j]);
                         }
                     }
                 }
