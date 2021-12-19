@@ -4,6 +4,7 @@ import java.util.StringTokenizer;
 
 import java.io.*;       //Input/Output
 
+import java.util.Scanner;
 
 public class Solver{
 
@@ -296,16 +297,16 @@ public class Solver{
 
 
             public static void checkCollision(TreeNode ret){
-                //se gia' esiste, agisco su activeBoards
-                TreeNode collisioner = activeBoards.get(ret.board);
+		//se gia' esiste, agisco su activeBoards
+		TreeNode collisioner = activeBoards.get(ret.board);
                 if(collisioner != null){
 
                     if(collisioner.board.mdist+collisioner.board.cdist+collisioner.moves <= ret.board.mdist+ret.board.cdist+ret.moves){
                         ret = null;
                     }
                     else{
-                        activeBoards.remove(collisioner.board);
-                        pQueue.remove(collisioner);
+                        //activeBoards.remove(collisioner.board);
+                        //pQueue.remove(collisioner);
                         collisioner = null;
 
                         pQueue.add(ret);
@@ -411,6 +412,10 @@ public class Solver{
 
     public static void main(String[] args) throws FileNotFoundException, IOException{
 
+
+        //Scanner in = new Scanner(System.in);
+        //in.nextInt();
+
         Board tab;                              //
         if(args.length == 0)                    //
             tab = readInput("input.txt");       //toDelete
@@ -418,6 +423,8 @@ public class Solver{
             tab = readInput(args[0]);           //
 
         //Board tab = readInput(args[0]);
+
+	
 
         Tree.TreeNode radice;
 

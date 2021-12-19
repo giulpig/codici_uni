@@ -142,12 +142,15 @@ public class Board{
         if(mdist != ((Board)(o)).mdist || bucox != ((Board)(o)).bucox || bucoy != ((Board)(o)).bucoy || cdist != ((Board)(o)).cdist){
             return false;
         }
+
+        return Arrays.equals(compressed, ((Board)(o)).compressed);
         
-        for(int i=0; i<longs; i++){
+        /*for(int i=0; i<longs; i++){
             if(compressed[i] != ((Board)(o)).compressed[i])
                 return false;
         }
-        return true;
+
+        return true;*/
     }
 
 }
