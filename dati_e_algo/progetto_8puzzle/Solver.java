@@ -305,8 +305,8 @@ public class Solver{
                         ret = null;
                     }
                     else{
-                        //activeBoards.remove(collisioner.board);
-                        //pQueue.remove(collisioner);
+                        activeBoards.remove(collisioner.board);
+                        pQueue.remove(collisioner);
                         collisioner = null;
 
                         pQueue.add(ret);
