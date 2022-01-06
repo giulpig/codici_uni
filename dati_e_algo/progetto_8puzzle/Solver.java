@@ -4,9 +4,7 @@ import java.util.StringTokenizer;
 
 import java.io.*;       //Input/Output
 
-import java.util.Scanner;
-
-public class Solver{
+public class Solver{    
 
     ////////////////////////////////////////////
     //Tree class
@@ -16,7 +14,9 @@ public class Solver{
     
     public static class Tree{
         public TreeNode root;
-        public short lastLevel;
+        public short lastLevel;         //toRemove
+
+        public static TreeNode winner, current;
         
         public Tree(TreeNode r){
             root = r;
@@ -26,22 +26,19 @@ public class Solver{
             pQueue.add(root);
             while(!pQueue.isEmpty()){
 
-                TreeNode current = pQueue.poll();
+                current = pQueue.poll();
 
-                TreeNode winner = current.calcSons();
+                winner = current.calcSons();
                 if(winner != null)   //true->win, also updates activeBoards and pQueue
                     return winner;
-
-                if(current.moves+current.board.cdist+current.board.mdist > lastLevel){
-                    System.out.print("\r" + (current.moves+current.board.cdist+current.board.mdist) + "   ");
-                    lastLevel = (short)(current.moves+current.board.cdist+current.board.mdist);
-                }
-                //System.out.print("\r" + nodes + " ");
-                //System.out.print("\r" + current.sons.length);
-                //System.out.print("\r" + current.board.toString());
+                
+                //toRemove
+                //if(current.moves+current.board.cdist+current.board.mdist > lastLevel){
+                //    System.out.print("\r" + (current.moves+current.board.cdist+current.board.mdist) + "   ");
+                //    lastLevel = (short)(current.moves+current.board.cdist+current.board.mdist);
+                //}
                 
             }
-            System.out.println("Invalid Board");      //toremove--------------------------
             return null;
         }
 
@@ -55,13 +52,16 @@ public class Solver{
             
             public static HashMap<Board, Tree.TreeNode> activeBoards = new HashMap<Board, Tree.TreeNode>(31721, 0.25f);
             
-            public short moves;       //mosse per arrivare qua === depth dell'albero
-            public byte lastMove;    //ultima mossa fatta: 0->radice 1->su 2->sx 3->dx 4->giu
+            public static TreeNode collisioner;
+            public static int i;
+
+            public short moves;         //mosse per arrivare qua === depth dell'albero
+            public byte lastMove;       //ultima mossa fatta: 0->radice 1->su 2->sx 3->dx 4->giu
             public Board board;
 
             public TreeNode father;
 
-            public TreeNode(){          //java e' stupid*
+            public TreeNode(){          //java e' un po' scemo
                 ;
             }
 
@@ -80,7 +80,7 @@ public class Solver{
 
                 if(lastMove!=4 && board.bucox > 0){          //swap in alto
                 
-                    newBoard = new Board(board.compressed);    //qua porei fregare la board se c'e' collisione e ho una dist minore
+                    newBoard = new Board(board.compressed);
 
                     ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)1);
 
@@ -88,15 +88,12 @@ public class Solver{
 
                     //aggiorno dist: real-expected
                     if(Board.shouldbe[ret.board.getTile(board.bucox-1, board.bucoy)][0] >= board.bucox){
-                        ret.board.mdist = (short)(board.mdist - 1);
+                        ret.board.mdist = board.mdist - 1;
                     }
                     else{
-                        ret.board.mdist = (short)(board.mdist + 1);
+                        ret.board.mdist = board.mdist + 1;
                     }
                     
-                    //------aggiorno hash modificando tile sopra il buco------
-                    //ret.board.hash = board.hash + ret.board.table[board.bucox-1][board.bucoy] * (Board.npowers[board.table.length*(board.bucox)+board.bucoy] - Board.npowers[board.table.length*(board.bucox-1)+board.bucoy]);
-
                     //swap
                     ret.board.setTile(board.bucox, board.bucoy, ret.board.getTile(board.bucox-1, board.bucoy));
                     ret.board.setTile(board.bucox-1, board.bucoy, 0);
@@ -106,7 +103,7 @@ public class Solver{
                     }
 
                     //update linear confict
-                    for(int i=0; i<board.bucoy; i++){
+                    for(i=0; i<board.bucoy; i++){
                         if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] == board.bucox-1 && Board.shouldbe[ret.board.getTile(board.bucox-1, i)][0] == board.bucox-1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] < Board.shouldbe[ret.board.getTile(board.bucox-1, i)][1]){
                             ret.board.cdist-=2;      //remove old confl
                         }
@@ -114,7 +111,7 @@ public class Solver{
                             ret.board.cdist+=2;      //add new confl.
                         }
                     }
-                    for(int i=board.bucoy+1; i<Board.lato; i++){
+                    for(i=board.bucoy+1; i<Board.lato; i++){
                         if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] == board.bucox-1 && Board.shouldbe[ret.board.getTile(board.bucox-1, i)][0] == board.bucox-1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] > Board.shouldbe[ret.board.getTile(board.bucox-1, i)][1]){
                             ret.board.cdist-=2;      //remove old confl
                         }
@@ -141,10 +138,10 @@ public class Solver{
 
                     //aggiorno dist: real-expected, casella swappata va a dx
                     if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy-1)][1] >= board.bucoy){
-                        ret.board.mdist = (short)(board.mdist - 1);
+                        ret.board.mdist = board.mdist - 1;
                     }
                     else{
-                        ret.board.mdist = (short)(board.mdist + 1);
+                        ret.board.mdist = board.mdist + 1;
                     }
 
                     //swap
@@ -155,11 +152,9 @@ public class Solver{
                         return ret;
                     }
                     
-                    //------aggiorno hash modificando tile sopra il buco------
-                    //ret.board.hash = board.hash + ret.board.table[board.bucox][board.bucoy-1] * (Board.npowers[board.table.length*(board.bucox)+board.bucoy] - Board.npowers[board.table.length*(board.bucox)+board.bucoy-1]);
 
                     //update linear confict
-                    for(int i=0; i<board.bucox; i++){
+                    for(i=0; i<board.bucox; i++){
                         if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] == board.bucoy-1 && Board.shouldbe[ret.board.getTile(i, board.bucoy-1)][1] == board.bucoy-1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] < Board.shouldbe[ret.board.getTile(i, board.bucoy-1)][0]){
                             ret.board.cdist-=2;      //remove old confl
                         }
@@ -167,7 +162,7 @@ public class Solver{
                             ret.board.cdist+=2;      //add new confl.
                         }
                     }
-                    for(int i=board.bucox+1; i<Board.lato; i++){
+                    for(i=board.bucox+1; i<Board.lato; i++){
                         if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] == board.bucoy-1 && Board.shouldbe[ret.board.getTile(i, board.bucoy-1)][1] == board.bucoy-1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] > Board.shouldbe[ret.board.getTile(i, board.bucoy-1)][0]){
                             ret.board.cdist-=2;      //remove old confl
                         }
@@ -194,10 +189,10 @@ public class Solver{
 
                     //aggiorno dist: real-expected, casella swappata va a sx
                     if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy+1)][1] <= board.bucoy){
-                        ret.board.mdist = (short)(board.mdist - 1);
+                        ret.board.mdist = board.mdist - 1;
                     }
                     else{
-                        ret.board.mdist = (short)(board.mdist + 1);
+                        ret.board.mdist = board.mdist + 1;
                     }
 
                     //swap
@@ -208,12 +203,9 @@ public class Solver{
                         return ret;
                     }
 
-                    //------aggiorno hash modificando tile sopra il buco------
-                    //ret.board.hash = board.hash + ret.board.table[board.bucox][board.bucoy+1] * (Board.npowers[board.table.length*(board.bucox)+board.bucoy] - Board.npowers[board.table.length*(board.bucox)+board.bucoy+1]);
-                    
 
                     //update linear confict
-                    for(int i=0; i<board.bucox; i++){
+                    for(i=0; i<board.bucox; i++){
                         if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] == board.bucoy+1 && Board.shouldbe[ret.board.getTile(i, board.bucoy+1)][1] == board.bucoy+1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] < Board.shouldbe[ret.board.getTile(i, board.bucoy+1)][0]){
                             ret.board.cdist-=2;      //remove old confl
                         }
@@ -221,7 +213,7 @@ public class Solver{
                             ret.board.cdist+=2;      //add new confl.
                         }
                     }
-                    for(int i=board.bucox+1; i<Board.lato; i++){
+                    for(i=board.bucox+1; i<Board.lato; i++){
                         if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] == board.bucoy+1 && Board.shouldbe[ret.board.getTile(i, board.bucoy+1)][1] == board.bucoy+1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] > Board.shouldbe[ret.board.getTile(i, board.bucoy+1)][0]){
                             ret.board.cdist-=2;      //remove old confl
                         }
@@ -247,14 +239,12 @@ public class Solver{
 
                     //aggiorno dist: real-expected
                     if(Board.shouldbe[ret.board.getTile(board.bucox+1, board.bucoy)][0] <= board.bucox){
-                        ret.board.mdist = (short)(board.mdist - 1);
+                        ret.board.mdist = board.mdist - 1;
                     }
                     else{
-                        ret.board.mdist = (short)(board.mdist + 1);
+                        ret.board.mdist = board.mdist + 1;
                     }
 
-                    //------aggiorno hash modificando tile sopra il buco------
-                    //ret.board.hash = board.hash + ret.board.table[board.bucox+1][board.bucoy] * (Board.npowers[board.table.length*(board.bucox)+board.bucoy] - Board.npowers[board.table.length*(board.bucox+1)+board.bucoy]);
 
                     //swap
                     ret.board.setTile(board.bucox, board.bucoy, ret.board.getTile(board.bucox+1, board.bucoy));
@@ -265,7 +255,7 @@ public class Solver{
                     }
 
                     //update linear confict
-                    for(int i=0; i<board.bucoy; i++){
+                    for(i=0; i<board.bucoy; i++){
                         if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] == board.bucox+1 && Board.shouldbe[ret.board.getTile(board.bucox+1, i)][0] == board.bucox+1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] < Board.shouldbe[ret.board.getTile(board.bucox+1, i)][1]){
                             ret.board.cdist-=2;      //remove old confl
                         }
@@ -273,7 +263,7 @@ public class Solver{
                             ret.board.cdist+=2;      //add new confl.
                         }
                     }
-                    for(int i=board.bucoy+1; i<Board.lato; i++){
+                    for(i=board.bucoy+1; i<Board.lato; i++){
                         if(Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][0] == board.bucox+1 && Board.shouldbe[ret.board.getTile(board.bucox+1, i)][0] == board.bucox+1 && Board.shouldbe[ret.board.getTile(board.bucox, board.bucoy)][1] > Board.shouldbe[ret.board.getTile(board.bucox+1, i)][1]){
                             ret.board.cdist-=2;      //remove old confl
                         }
@@ -297,8 +287,8 @@ public class Solver{
 
 
             public static void checkCollision(TreeNode ret){
-		//se gia' esiste, agisco su activeBoards
-		TreeNode collisioner = activeBoards.get(ret.board);
+                //se gia' esiste, agisco su activeBoards
+                collisioner = activeBoards.get(ret.board);
                 if(collisioner != null){
 
                     if(collisioner.board.mdist+collisioner.board.cdist+collisioner.moves <= ret.board.mdist+ret.board.cdist+ret.moves){
@@ -328,7 +318,6 @@ public class Solver{
             @Override
             public boolean equals(Object o){
                 return board.mdist+board.cdist+moves == (((TreeNode)(o)).board.mdist+((TreeNode)(o)).board.cdist+((TreeNode)(o)).moves);
-                //return false;
             }
         }
     }
@@ -412,19 +401,13 @@ public class Solver{
 
     public static void main(String[] args) throws FileNotFoundException, IOException{
 
-
-        //Scanner in = new Scanner(System.in);
-        //in.nextInt();
-
         Board tab;                              //
         if(args.length == 0)                    //
             tab = readInput("input.txt");       //toDelete
         else                                    //
             tab = readInput(args[0]);           //
-
-        //Board tab = readInput(args[0]);
-
-	
+        
+        //tab = readInput(args[0]);    tab = readInput(args[0]);         //keep this for final version
 
         Tree.TreeNode radice;
 

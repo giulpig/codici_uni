@@ -9,11 +9,14 @@ public class Board{
     public static int numsPerLong;
     public static int longs;
 
+    public static int i, j, ret, tile, k, index, index2;
+    public static long maskHere;
+
     public long[] compressed;
     public int bucox;
     public int bucoy;
-    public short mdist;
-    public short cdist;
+    public int mdist;
+    public int cdist;
 
 
     public Board(int[][] tiles, boolean first){        //for first entry
@@ -22,7 +25,6 @@ public class Board{
         bitsPerNum = 32 - Integer.numberOfLeadingZeros(lato*lato);
         mask = (1<<bitsPerNum) - 1;
         numsPerLong = 64/bitsPerNum;
-        //longs = (int)(Math.ceil(lato*lato/(double)numsPerLong));   <-NOT SAFE!
         int remainder = lato*lato;
         do{
             longs++;
@@ -33,12 +35,12 @@ public class Board{
 
         compressed = new long[longs];
 
-        for(int i=0; i<lato; i++){           //copio, trovo buco, calcolo dist, ***calcolo hash
-            for(int j=0; j<lato; j++){
+        for(i=0; i<lato; i++){           //copio, trovo buco, calcolo dist
+            for(j=0; j<lato; j++){
 
                 setTile(i, j, tiles[i][j]);
                 
-                int tile = getTile(i,j);
+                tile = getTile(i,j);
 
                 if(tile != 0){
 
@@ -47,16 +49,14 @@ public class Board{
 
                     mdist += Math.abs(i-shouldbe[tile][0]) + Math.abs(j-shouldbe[tile][1]);
                     
-                    for(int k=j+1; k<lato; k++){    //right check
+                    for(k=j+1; k<lato; k++){    //right check
                         if(tiles[i][k]!=0 && shouldbe[tile][0]==i && (tiles[i][k]-1)/lato==i && shouldbe[tile][1] > (tiles[i][k]-1)%lato){
                             cdist+=2;
-                            System.out.println("\nConflitto tra " + tiles[i][k] + " e " + tiles[i][j]);
                         }
                     }
-                    for(int k=i+1; k<lato; k++){    //down check
+                    for(k=i+1; k<lato; k++){    //down check
                         if(tiles[k][j]!=0 && shouldbe[tile][1]==j && (tiles[k][j]-1)%lato==j && shouldbe[tile][0] > (tiles[k][j]-1)/lato){
                             cdist+=2;
-                            System.out.println("\nConflitto tra " + tiles[k][j] + " e " + tiles[i][j]);
                         }
                     }
                 }
@@ -71,7 +71,7 @@ public class Board{
 
     public Board(long[] tiles){        //for copying
         compressed = new long[longs];
-        for(int i=0; i<longs; i++){
+        for(i=0; i<longs; i++){
             compressed[i] = tiles[i];
         }
     }
@@ -80,8 +80,8 @@ public class Board{
     public final String toString(){
         
         StringBuilder ret = new StringBuilder();
-        for(int i=0; i<lato; i++){
-            for(int j=0; j<lato; j++){
+        for(i=0; i<lato; i++){
+            for(j=0; j<lato; j++){
                 if(i*lato+j == lato*lato-1)
                     ret.append(getTile(i,j));
                 else
@@ -99,10 +99,10 @@ public class Board{
 
     public void calcManhattan(){
         
-        short ret = 0;
+        ret = 0;
 
-        for(int i=0; i<lato; i++){                     //calcolo distanza
-            for(int j=0; j<lato; j++){
+        for(i=0; i<lato; i++){                     //calcolo distanza
+            for(j=0; j<lato; j++){
                 if(getTile(i,j) != 0)
                     ret += Math.abs(i-(getTile(i,j)-1)/lato) + Math.abs(j-(getTile(i,j)-1)%lato);
             }
@@ -113,26 +113,24 @@ public class Board{
 
 
     public void setTile(int i, int j, long v){
-        int index = (i*lato+j)/numsPerLong;   //which el in array?
-        int index2 = (i*lato+j)%numsPerLong;  //which el in long?
-        long maskHere = mask << (bitsPerNum*index2);
+        index = (i*lato+j)/numsPerLong;   //which el in array?
+        index2 = (i*lato+j)%numsPerLong;  //which el in long?
+        maskHere = mask << (bitsPerNum*index2);
         compressed[index] = compressed[index] & (~maskHere) | v<<(bitsPerNum*index2);
     }
 
 
     public int getTile(int i, int j){
-        int index = (i*lato+j)/numsPerLong;   //which el in array?
-        int index2 = (i*lato+j)%numsPerLong;  //which el in long?
-        long maskHere = mask << (bitsPerNum*index2);
+        index = (i*lato+j)/numsPerLong;   //which el in array?
+        index2 = (i*lato+j)%numsPerLong;  //which el in long?
+        maskHere = mask << (bitsPerNum*index2);
         return (int)((compressed[index] & maskHere) >>> (bitsPerNum*index2));
     }
 
 
 
     @Override
-    public int hashCode(){          ///////////////////////////WORK IN PROGESS
-        //return hash;
-        //return toStringNoSpaces().hashCode();
+    public int hashCode(){
         return Arrays.hashCode(compressed);
     }
 
@@ -144,13 +142,6 @@ public class Board{
         }
 
         return Arrays.equals(compressed, ((Board)(o)).compressed);
-        
-        /*for(int i=0; i<longs; i++){
-            if(compressed[i] != ((Board)(o)).compressed[i])
-                return false;
-        }
-
-        return true;*/
     }
 
 }
