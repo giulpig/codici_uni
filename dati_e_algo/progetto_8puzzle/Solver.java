@@ -14,7 +14,7 @@ public class Solver{
     
     public static class Tree{
         public TreeNode root;
-        public short lastLevel;         //toRemove
+        //public short lastLevel;         //for debug
 
         public static TreeNode winner, current;
         
@@ -32,7 +32,7 @@ public class Solver{
                 if(winner != null)   //true->win, also updates activeBoards and pQueue
                     return winner;
                 
-                //toRemove
+                //for debug, prints the current level
                 //if(current.moves+current.board.cdist+current.board.mdist > lastLevel){
                 //    System.out.print("\r" + (current.moves+current.board.cdist+current.board.mdist) + "   ");
                 //    lastLevel = (short)(current.moves+current.board.cdist+current.board.mdist);
@@ -61,7 +61,7 @@ public class Solver{
 
             public TreeNode father;
 
-            public TreeNode(){          //java e' un po' scemo
+            public TreeNode(){          //java lo richiede, non ho idea del perche'
                 ;
             }
 
@@ -83,8 +83,6 @@ public class Solver{
                     newBoard = new Board(board.compressed);
 
                     ret = new TreeNode(newBoard, (short)(moves+1), this, (byte)1);
-
-                    
 
                     //aggiorno dist: real-expected
                     if(Board.shouldbe[ret.board.getTile(board.bucox-1, board.bucoy)][0] >= board.bucox){
@@ -335,8 +333,7 @@ public class Solver{
  
         public FastReader(String filename) throws FileNotFoundException
         {
-            br = new BufferedReader(
-                new InputStreamReader(new FileInputStream(filename)));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
         }
  
         String next()
@@ -401,13 +398,10 @@ public class Solver{
 
     public static void main(String[] args) throws FileNotFoundException, IOException{
 
-        Board tab;                              //
-        if(args.length == 0)                    //
-            tab = readInput("input.txt");       //toDelete
-        else                                    //
-            tab = readInput(args[0]);           //
+        Board tab;
         
-        //tab = readInput(args[0]);    tab = readInput(args[0]);         //keep this for final version
+        tab = readInput(args[0]);    
+        tab = readInput(args[0]);
 
         Tree.TreeNode radice;
 
