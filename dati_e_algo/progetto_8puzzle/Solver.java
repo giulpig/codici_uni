@@ -336,23 +336,18 @@ public class Solver{
             br = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
         }
  
-        String next()
+        String next() throws IOException
         {
             while (st == null || !st.hasMoreElements()) {
-                try {
-                    st = new StringTokenizer(br.readLine());
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
+                st = new StringTokenizer(br.readLine());
             }
             return st.nextToken();
         }
 
-        int nextInt() { return Integer.parseInt(next()); }
+        int nextInt() throws IOException { return Integer.parseInt(next()); }
     }
 
-    public static Board readInput(String filename) throws FileNotFoundException{
+    public static Board readInput(String filename) throws FileNotFoundException, IOException{
         
         FastReader sc = new FastReader(filename);
 
@@ -391,7 +386,7 @@ public class Solver{
             out.write("\n".getBytes());
         }*/
 
-        /*BufferedWriter out = new BufferedWriter(new OutputStreamWriter(System.out));
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(System.out));
 
         out.write((counter-1) + "\n");
 
@@ -399,13 +394,15 @@ public class Solver{
             out.write(path[counter].board.toString() + "\n");
         }
 
-        out.flush();*/
+        out.flush();
 
+        /*
         System.out.println((counter-1) + "\n");
 
         while(--counter >= 0){
             System.out.println(path[counter].board.toString() + "\n");
         }
+        */
     }
 
 
@@ -414,7 +411,6 @@ public class Solver{
 
         Board tab;
         
-        tab = readInput(args[0]);    
         tab = readInput(args[0]);
 
         Tree.TreeNode radice;
