@@ -1,6 +1,7 @@
 import java.util.PriorityQueue;
 import java.util.HashMap;
 import java.util.StringTokenizer;
+import java.util.Scanner;
 
 import java.io.*;       //Input/Output
 
@@ -327,44 +328,15 @@ public class Solver{
     //IO operations
     ////////////////////////////////////////////
 
-    static class FastReader{
-        BufferedReader br;
-        StringTokenizer st;
- 
-        public FastReader(String filename) throws FileNotFoundException
-        {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
-        }
- 
-        String next() throws IOException
-        {
-            while (st == null || !st.hasMoreElements()) {
-                st = new StringTokenizer(br.readLine());
-            }
-            return st.nextToken();
-        }
-
-        int nextInt() throws IOException { return Integer.parseInt(next()); }
-    }
-
     public static Board readInput(String filename) throws FileNotFoundException, IOException{
         
-        FastReader sc = new FastReader(filename);
+        //FastReader sc = new FastReader(filename);
+
+        InputReader sc = new InputReader(new FileInputStream(filename), 1<<17);
 
         int lato = sc.nextInt();
 
-        int[][] tabella = new int[lato][lato];
-
-        int n = lato*lato;
-        int counter = 0;
-
-        while(n-- > 0){
-            tabella[counter/lato][counter%lato] = sc.nextInt();
-            counter++;
-        }
-
-        return new Board(tabella, true);
-
+        return new Board(sc.nextIntMatrix(lato, lato), true);
     }
 
     //Recreate path from solution to root
@@ -386,15 +358,18 @@ public class Solver{
             out.write("\n".getBytes());
         }*/
 
-        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(System.out));
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(java.io.FileDescriptor.out), "ASCII"), 2048);
 
         out.write((counter-1) + "\n");
 
         while(--counter >= 0){
-            out.write(path[counter].board.toString() + "\n");
+            out.write(path[counter].board.toString());
+            out.write("\n");
         }
 
         out.flush();
+
+        out.close();
 
         /*
         System.out.println((counter-1) + "\n");
@@ -422,6 +397,126 @@ public class Solver{
         printPath(albero.findSolver());
 
     }
+
+
+
+    public static class InputReader {
+  
+        private static final int DEFAULT_BUFFER_SIZE = 1 << 16;
+        
+        // 'c' is used to refer to the current character in the stream
+        private int c;
+        
+        // Variables associated with the byte buffer. 
+        private byte[] buf;
+        private int bufferSize, bufIndex, numBytesRead;
+        
+        private InputStream stream;
+      
+        // End Of File (EOF) character
+        private static final byte EOF   = -1;
+      
+        // Space character: ' '
+        private static final byte SPACE = 32;
+      
+        // Dash character: '-'
+        private static final byte DASH  = 45;
+
+        private char[] charBuffer;
+      
+        // Primitive data type lookup tables used for optimizations
+        private static byte[] bytes = new byte[58];
+        private static  int[] ints  = new int[58];
+        private static char[] chars = new char[128];
+      
+        static {
+          char ch = ' '; int value = 0; byte _byte = 0;
+          for (int i = 48; i <  58; i++ ) bytes[i] = _byte++;
+          for (int i = 48; i <  58; i++ )  ints[i] = value++;
+          for (int i = 32; i < 128; i++ ) chars[i] = ch++;
+        }
+      
+        /**
+         * Create an InputReader that reads from standard input.
+         * @param  stream        Takes an {@link java.io.InputStream#InputStream() InputStream} as a parameter to read from.
+         * @param  bufferSize    The size of the buffer to use.
+         */
+        public InputReader (InputStream stream, int bufferSize) {
+          if (stream == null || bufferSize <= 0)
+            throw new IllegalArgumentException();
+          buf = new byte[bufferSize];
+          charBuffer = new char[128];
+          this.bufferSize = bufferSize;
+          this.stream = stream;
+        }
+        
+
+        private int readJunk(int token) throws IOException { 
+          
+          if (numBytesRead == EOF) return EOF;
+      
+          // Seek to the first valid position index
+          do {
+            
+            while(bufIndex < numBytesRead) {
+              if (buf[bufIndex] > token) return 0;
+              bufIndex++;
+            }
+      
+            // reload buffer
+            numBytesRead = stream.read(buf);
+            if (numBytesRead == EOF) return EOF;
+            bufIndex = 0;
+      
+          } while(true);
+      
+        }
+        
+
+        public int nextInt() throws IOException {
+          
+          if (readJunk(DASH-1) == EOF) throw new IOException();
+          int sgn = 1, res = 0;
+      
+          c = buf[bufIndex];
+          if (c == DASH) { sgn = -1; bufIndex++; }
+      
+          do {
+      
+            while(bufIndex < numBytesRead) {
+              if (buf[bufIndex] > SPACE) {
+                res = (res<<3)+(res<<1);
+                res += ints[buf[bufIndex++]];
+              } else {
+                bufIndex++;
+                return res*sgn;
+              }
+            }
+      
+            // Reload buffer
+            numBytesRead = stream.read(buf);
+            if (numBytesRead == EOF) return res*sgn;
+            bufIndex = 0;
+      
+          } while(true);
+      
+        }
+
+        // Read a two dimensional matrix of ints of size rows x cols
+        public int[][] nextIntMatrix(int rows, int cols) throws IOException {
+          int[][] matrix = new int[rows][cols];
+          for(int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++)
+              matrix[i][j] = nextInt();
+          return matrix;
+        }
+      
+        // Closes the input stream
+        public void close() throws IOException {
+          stream.close();
+        }
+      
+      }
 
 
 }
