@@ -382,16 +382,30 @@ public class Solver{
             pointer = pointer.father;
         }
 
-        BufferedOutputStream out = new BufferedOutputStream(System.out);
+        /*BufferedOutputStream out = new BufferedOutputStream(System.out);
 
         out.write(((counter-1) + "\n").getBytes());
 
         while(--counter >= 0){
             out.write(path[counter].board.toString().getBytes());
             out.write("\n".getBytes());
+        }*/
+
+        /*BufferedWriter out = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        out.write((counter-1) + "\n");
+
+        while(--counter >= 0){
+            out.write(path[counter].board.toString() + "\n");
         }
 
-        out.flush();
+        out.flush();*/
+
+        System.out.println((counter-1) + "\n");
+
+        while(--counter >= 0){
+            System.out.println(path[counter].board.toString() + "\n");
+        }
     }
 
 
