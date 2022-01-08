@@ -1,7 +1,5 @@
 import java.util.PriorityQueue;
 import java.util.HashMap;
-import java.util.StringTokenizer;
-import java.util.Scanner;
 
 import java.io.*;       //Input/Output
 
@@ -329,8 +327,6 @@ public class Solver{
     ////////////////////////////////////////////
 
     public static Board readInput(String filename) throws FileNotFoundException, IOException{
-        
-        //FastReader sc = new FastReader(filename);
 
         InputReader sc = new InputReader(new FileInputStream(filename), 1<<17);
 
@@ -349,14 +345,6 @@ public class Solver{
             pointer = pointer.father;
         }
 
-        /*BufferedOutputStream out = new BufferedOutputStream(System.out);
-
-        out.write(((counter-1) + "\n").getBytes());
-
-        while(--counter >= 0){
-            out.write(path[counter].board.toString().getBytes());
-            out.write("\n".getBytes());
-        }*/
 
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(java.io.FileDescriptor.out), "ASCII"), 2048);
 
@@ -400,6 +388,7 @@ public class Solver{
 
 
 
+    //just a long class for improved input times
     public static class InputReader {
   
         private static final int DEFAULT_BUFFER_SIZE = 1 << 16;
